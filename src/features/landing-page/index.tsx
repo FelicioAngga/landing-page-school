@@ -11,7 +11,7 @@ function LandingPage() {
       <div className="px-[60px] 2xl:px-28 py-5">
         <div className="relative">
           <img
-            src="src/assets/images/jumbotron.png"
+            src="images/jumbotron.png"
             className="rounded-xl object-cover w-full max-h-[80vh]"
           />
           <div className="absolute bottom-9 right-4 text-right text-white">
@@ -26,7 +26,7 @@ function LandingPage() {
 
         <div className="flex justify-between mt-10 lg:gap-10">
           <img
-            src="src/assets/images/smile-kid-vector.png"
+            src="images/smile-kid-vector.png"
             alt=""
             className="max-w-[50%] 2xl:w-full rounded-sm object-cover"
           />

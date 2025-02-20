@@ -13,14 +13,14 @@ function SchoolLevel() {
           </p>
         </div>
         <img
-          src="src/assets/images/pg.png"
+          src="/images/pg.png"
           className="object-cover 2xl:w-[60%] rounded-xl"
         />
       </div>
 
       <div className="flex gap-10 justify-between">
         <img
-          src="src/assets/images/pg.png"
+          src="/images/pg.png"
           className="object-cover 2xl:w-[60%] rounded-xl"
         />
         <div>
@@ -48,14 +48,14 @@ function SchoolLevel() {
           </p>
         </div>
         <img
-          src="src/assets/images/sd.png"
+          src="/images/sd.png"
           className="object-cover 2xl:w-[60%] rounded-xl"
         />
       </div>
 
       <div className="flex gap-10 justify-between">
         <img
-          src="src/assets/images/smp.png"
+          src="/images/smp.png"
           className="object-cover 2xl:w-[60%] rounded-xl"
         />
         <div>
@@ -84,7 +84,7 @@ function SchoolLevel() {
           </p>
         </div>
         <img
-          src="src/assets/images/sma.png"
+          src="/images/sma.png"
           className="object-cover 2xl:w-[60%] rounded-xl"
         />
       </div>
