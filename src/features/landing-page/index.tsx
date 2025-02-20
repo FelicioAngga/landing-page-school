@@ -7,7 +7,7 @@ import SchoolLevel from "./components/SchoolLevel";
 
 function LandingPage() {
   return (
-    <>
+    <React.Fragment>
       <NavigationBar />
       <div className="px-[60px] 2xl:px-28 py-5">
         <div className="relative">
@@ -47,7 +47,7 @@ function LandingPage() {
         <LatestNews />
       </div>
       <Footer />
-    </>
+    </React.Fragment>
   );
 }
 
