@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: Lexend Deca;
+    font-weight: 400;
+    src: url(/src/assets/fonts/lexend-deca/LexendDeca-Regular.ttf);
+  }
+  @font-face {
+    font-family: Lexend Deca;
+    font-weight: 500;
+    src: url(/src/assets/fonts/lexend-deca/LexendDeca-Medium.ttf);
+  }
+  @font-face {
+    font-family: Lexend Deca;
+    font-weight: 600;
+    src: url(/src/assets/fonts/lexend-deca/LexendDeca-SemiBold.ttf);
+  }
+  @font-face {
+    font-family: Lexend Deca;
+    font-weight: 700;
+    src: url(/src/assets/fonts/lexend-deca/LexendDeca-Bold.ttf);
+  }
+  @font-face {
+    font-family: Lexend Deca;
+    font-weight: 900;
+    src: url(/src/assets/fonts/lexend-deca/LexendDeca-Black.ttf);
+  }
+}
