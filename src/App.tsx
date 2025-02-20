@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Login from "./features/login";
@@ -7,6 +8,7 @@ import LandingPage from "./features/landing-page";
 function App() {
   const queryClient = new QueryClient();
 
+  React.useEffect(() => {}, [])
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
