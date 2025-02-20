@@ -1,7 +1,7 @@
 
 function NavigationBar() {
   return (
-    <div className="flex justify-between py-3 px-[60px] 2xl:py-5 2xl:px-28 border-b border-[#E5E8EB]">
+    <div className="flex justify-between py-5 px-[60px] 2xl:py-7 2xl:px-28 border-b border-[#E5E8EB]">
       <div className="text-xl 2xl:text-2xl font-bold">
         Letjend Haryono M.T.
       </div>
