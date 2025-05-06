@@ -8,15 +8,15 @@ function LandingPage() {
   return (
     <>
       <NavigationBar />
-      <div className="px-[60px] 2xl:px-28 py-5">
+      <div className="px-4 md:px-[60px] 2xl:px-28 py-5">
         <div className="relative">
           <img
             src="images/jumbotron.png"
-            className="rounded-xl object-cover w-full max-h-[80vh]"
+            className="rounded-xl object-cover w-full h-96 md:max-h-[80vh]"
           />
           <div className="absolute bottom-9 right-4 text-right text-white">
-            <p className="text-5xl font-black">Letjend Haryono M.T.</p>
-            <p className="mt-3">
+            <p className="text-2xl md:text-5xl font-black">Letjend Haryono M.T.</p>
+            <p className="mt-3 text-sm md:text-base">
               Temukan minat Anda. Temukan orang-orang Anda.
               <br />
               Unggul dalam studi Anda. Terlibat dengan dunia.
@@ -24,17 +24,17 @@ function LandingPage() {
           </div>
         </div>
 
-        <div className="flex justify-between mt-10 lg:gap-10">
+        <div className="flex flex-col md:flex-row justify-between mt-10 lg:gap-10">
           <img
             src="images/smile-kid-vector.png"
             alt=""
-            className="max-w-[50%] 2xl:w-full rounded-sm object-cover"
+            className="md:max-w-[50%] 2xl:w-full rounded-sm object-cover"
           />
           <div className="flex flex-col justify-center gap-3">
-            <p className="font-black text-4xl 2xl:text-5xl text-center whitespace-nowrap">
+            <p className="font-black text-2xl md:text-4xl 2xl:text-5xl text-center whitespace-nowrap">
               Daftarkan Anak Anda
             </p>
-            <p className="2xl:text-lg max-w-md text-center mx-auto">
+            <p className="text-sm md:text-base 2xl:text-lg max-w-md text-center mx-auto">
               Kami menawarkan pendidikan berkualitas tinggi dan staf pengajar
               yang berdedikasi
             </p>

@@ -2,12 +2,12 @@ import NewsItem from "./NewsItem";
 
 function LatestNews() {
   return (
-    <div className="mt-24">
+    <div className="mt-16 md:mt-24">
       <div className="flex justify-between">
-        <p className="text-4xl font-bold">Berita Terbaru</p>
+        <p className="text-2xl md:text-4xl font-bold">Berita Terbaru</p>
         <a
           href="#"
-          className="h-fit my-auto underline font-bold text-[#637587]"
+          className="text-sm md:text-base h-fit my-auto underline font-bold text-[#637587]"
         >
           Lihat Semua
         </a>
