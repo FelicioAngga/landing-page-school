@@ -29,3 +29,7 @@
     src: url(/src/assets/fonts/lexend-deca/LexendDeca-Black.ttf);
   }
 }
+
+input:focus-visible {
+  outline: none;
+}

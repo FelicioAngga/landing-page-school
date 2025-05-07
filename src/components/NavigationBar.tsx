@@ -33,7 +33,7 @@ function NavigationBar() {
         onClick={() => navigate("/")}
         className="text-xl 2xl:text-2xl font-bold cursor-pointer"
       >
-        Letjend Haryono M.T.
+        Letjen Haryono M.T.
       </div>
 
       <div className="gap-9 hidden md:flex">

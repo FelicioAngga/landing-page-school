@@ -8,6 +8,7 @@ export default function () {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -15,17 +16,28 @@ export default function () {
   return (
     <div>
       <div className="flex justify-center py-6 px-4 h-[92vh]">
-        <div className="md:w-[50%] xl:w-[40%] flex flex-col gap-20 md:gap-32 mb-3 pt-7 md:px-[60px] 2xl:pt-10 2xl:px-28">
+        <div className="md:w-[50%] xl:w-[40%] flex flex-col gap-20 md:gap-24 mb-3 pt-7 md:px-[60px] 2xl:pt-10 2xl:px-28">
           <div>
-            <p className="text-2xl md:text-3xl font-bold text-center">Login</p>
+            <p className="text-2xl md:text-3xl font-bold text-center">
+              Pendaftaran Akun
+            </p>
             <p className="text-xs md:text-sm text-[#A5A5A5] mt-4 text-center">
-              Login untuk melakukan pendaftaran siswa dan melihat proses
-              pendaftaran siswa
+              Daftar akun terlebih dahulu untuk melakukan pendaftaran siswa
             </p>
           </div>
 
           <div>
-            <p className="font-medium">Email</p>
+            <p className="font-medium">Nama</p>
+            <input
+              type="text"
+              placeholder="Masukkan nama"
+              className="w-full py-2.5 px-3 rounded border border-[#A5A5A5] mt-2"
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+            />
+
+            <p className="font-medium mt-6">Email</p>
             <input
               type="text"
               placeholder="Masukkan email"
@@ -70,16 +82,25 @@ export default function () {
             </div>
 
             <Button
-              disabled={!formData.email || formData.password.length < 6}
+              disabled={
+                !formData.email ||
+                !formData.name ||
+                formData.password.length < 6
+              }
               className="w-full rounded-3xl mt-12"
             >
-              Login
+              Sign Up
             </Button>
           </div>
 
           <p className="md:mt-auto text-sm text-[#828282] text-center">
-            Belum punya akun?{" "}
-            <span className="ml-1 text-blue-500 cursor-pointer" onClick={() => navigate("/register")}>Daftar disini</span>
+            Sudah punya akun?{" "}
+            <span
+              className="ml-1 text-blue-500 cursor-pointer"
+              onClick={() => navigate("/login")}
+            >
+              Login disini
+            </span>
           </p>
         </div>
         <img
