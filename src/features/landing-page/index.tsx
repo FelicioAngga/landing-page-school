@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import NavigationBar from "../../components/NavigationBar";
 import Footer from "./components/Footer";
@@ -5,6 +6,7 @@ import LatestNews from "./components/LatestNews";
 import SchoolLevel from "./components/SchoolLevel";
 
 function LandingPage() {
+  const navigate = useNavigate();
   return (
     <>
       <NavigationBar />
@@ -38,7 +40,7 @@ function LandingPage() {
               Kami menawarkan pendidikan berkualitas tinggi dan staf pengajar
               yang berdedikasi
             </p>
-            <Button>Daftar Sekarang</Button>
+            <Button onClick={() => navigate("/student-registration")}>Daftar Sekarang</Button>
           </div>
         </div>
 
