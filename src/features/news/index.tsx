@@ -6,9 +6,9 @@ import { useState } from "react";
 
 export default function () {
   const [itemOffset, setItemOffset] = useState(0);
-  const pageCount = Math.ceil(44 / 6);
+  const pageCount = Math.ceil(70 / 6);
   const handlePageClick = (event: any) => {
-    const newOffset = (event.selected * 6) % 44;
+    const newOffset = (event.selected * 6) % 70;
     console.log(
       `User requested page number ${event.selected}, which is offset ${newOffset}, itemOffset ${itemOffset}`
     );
@@ -33,7 +33,8 @@ export default function () {
           />
         </div>
 
-        <div className="mt-10 flex flex-col items-center md:flex-row md:justify-between gap-6 flex-wrap">
+        {/* <div className="mt-10 flex flex-col items-center md:flex-row md:justify-between gap-6 flex-wrap"> */}
+        <div className="mt-10 grid grid-flow-col grid-rows-6 md:grid-rows-3 xl:grid-rows-2 gap-6">
           {Array.from({ length: 6 }, (_, index) => (
             <NewsItem key={index} />
           ))}
@@ -52,6 +53,7 @@ export default function () {
           nextClassName="rounded-r text-gray-600 font-medium cursor-pointer border border-gray-300 px-4 py-1.5"
           pageClassName="border border-gray-300 px-3 py-1.5"
           activeClassName="bg-blue-500 text-white"
+          breakClassName="border border-gray-300 px-3 py-1.5"
         />
       </div>
       <Footer />
