@@ -1,9 +1,11 @@
 import { useState } from "react";
 import StudentInformation from "./components/StudentInformation";
 import GuardianInformation from "./components/GuardianInformation";
+import Document from "./components/Document";
+import Payment from "./components/Payment";
 
 export default function () {
-  const [selectedTab, setSelectedTab] = useState("Informasi Siswa");
+  const [selectedTab, setSelectedTab] = useState("Pembayaran");
 
   return (
     <div className="py-5 px-4 md:px-[60px] 2xl:py-7 2xl:px-28">
@@ -44,6 +46,8 @@ export default function () {
 
       {selectedTab === "Informasi Siswa" && <StudentInformation setSelectedTab={setSelectedTab} />}
       {selectedTab === "Informasi Wali" && <GuardianInformation setSelectedTab={setSelectedTab} />}
+      {selectedTab === "Dokumen" && <Document setSelectedTab={setSelectedTab} />}
+      {selectedTab === "Pembayaran" && <Payment setSelectedTab={setSelectedTab} />}
     </div>
   );
 }
