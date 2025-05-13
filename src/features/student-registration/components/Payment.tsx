@@ -39,46 +39,49 @@ function Payment({ setSelectedTab }: PaymentProps) {
       <p className="text-2xl md:text-3xl font-bold text-center">Pembayaran</p>
       <div className="my-8">
         <table className="font-medium text-[13px] md:text-base">
-          <tr className="border border-gray-400 sm:border-none">
-            <td>Uang Pembangunan</td>
-            <td className="py-1 px-0.5 md:px-4">:</td>
-            <td className="whitespace-nowrap">Rp. {(2000000).toLocaleString()}</td>
-          </tr>
-          <tr className="border border-gray-400 sm:border-none">
-            <td>Uang Sekolah TK A/B</td>
-            <td className="py-1 px-0.5 md:px-4">:</td>
-            <td className="whitespace-nowrap">Rp. {(305000).toLocaleString()}</td>
-          </tr>
-          <tr className="border border-gray-400 sm:border-none">
-            <td>Uang Sekolah SD Kelas I Sampai Kelas V</td>
-            <td className="py-1 px-0.5 md:px-4">:</td>
-            <td className="whitespace-nowrap">Rp. {(285000).toLocaleString()}</td>
-          </tr>
-          <tr className="border border-gray-400 sm:border-none">
-            <td>Uang Sekolah SD Kelas VI</td>
-            <td className="py-1 px-0.5 md:px-4">:</td>
-            <td className="whitespace-nowrap">Rp. {(295000).toLocaleString()}</td>
-          </tr>
-          <tr className="border border-gray-400 sm:border-none">
-            <td>Uang Sekolah SMP Kelas I Sampai Kelas II</td>
-            <td className="py-1 px-0.5 md:px-4">:</td>
-            <td className="whitespace-nowrap">Rp. {(335000).toLocaleString()}</td>
-          </tr>
-          <tr className="border border-gray-400 sm:border-none">
-            <td>Uang Sekolah SMP Kelas III</td>
-            <td className="py-1 px-0.5 md:px-4">:</td>
-            <td className="whitespace-nowrap">Rp. {(345000).toLocaleString()}</td>
-          </tr>
-          <tr className="border border-gray-400 sm:border-none">
-            <td>Uang Sekolah SMA Kelas I Sampai Kelas II</td>
-            <td className="py-1 px-0.5 md:px-4">:</td>
-            <td className="whitespace-nowrap">Rp. {(345000).toLocaleString()}</td>
-          </tr>
-          <tr className="border border-gray-400 sm:border-none">
-            <td>Uang Sekolah SMA Kelas III</td>
-            <td className="py-1 px-0.5 md:px-4">:</td>
-            <td className="whitespace-nowrap">Rp. {(355000).toLocaleString()}</td>
-          </tr>
+          <tbody>
+
+            <tr className="border border-gray-400 sm:border-none">
+              <td>Uang Pembangunan</td>
+              <td className="py-1 px-0.5 md:px-4">:</td>
+              <td className="whitespace-nowrap">Rp. {(2000000).toLocaleString()}</td>
+            </tr>
+            <tr className="border border-gray-400 sm:border-none">
+              <td>Uang Sekolah TK A/B</td>
+              <td className="py-1 px-0.5 md:px-4">:</td>
+              <td className="whitespace-nowrap">Rp. {(305000).toLocaleString()}</td>
+            </tr>
+            <tr className="border border-gray-400 sm:border-none">
+              <td>Uang Sekolah SD Kelas I Sampai Kelas V</td>
+              <td className="py-1 px-0.5 md:px-4">:</td>
+              <td className="whitespace-nowrap">Rp. {(285000).toLocaleString()}</td>
+            </tr>
+            <tr className="border border-gray-400 sm:border-none">
+              <td>Uang Sekolah SD Kelas VI</td>
+              <td className="py-1 px-0.5 md:px-4">:</td>
+              <td className="whitespace-nowrap">Rp. {(295000).toLocaleString()}</td>
+            </tr>
+            <tr className="border border-gray-400 sm:border-none">
+              <td>Uang Sekolah SMP Kelas I Sampai Kelas II</td>
+              <td className="py-1 px-0.5 md:px-4">:</td>
+              <td className="whitespace-nowrap">Rp. {(335000).toLocaleString()}</td>
+            </tr>
+            <tr className="border border-gray-400 sm:border-none">
+              <td>Uang Sekolah SMP Kelas III</td>
+              <td className="py-1 px-0.5 md:px-4">:</td>
+              <td className="whitespace-nowrap">Rp. {(345000).toLocaleString()}</td>
+            </tr>
+            <tr className="border border-gray-400 sm:border-none">
+              <td>Uang Sekolah SMA Kelas I Sampai Kelas II</td>
+              <td className="py-1 px-0.5 md:px-4">:</td>
+              <td className="whitespace-nowrap">Rp. {(345000).toLocaleString()}</td>
+            </tr>
+            <tr className="border border-gray-400 sm:border-none">
+              <td>Uang Sekolah SMA Kelas III</td>
+              <td className="py-1 px-0.5 md:px-4">:</td>
+              <td className="whitespace-nowrap">Rp. {(355000).toLocaleString()}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <div className="border p-4 rounded md:border-none md:p-0">

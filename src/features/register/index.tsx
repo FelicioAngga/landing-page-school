@@ -3,15 +3,47 @@ import Button from "../../components/Button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useMutation } from "@tanstack/react-query";
+import { registerUser } from "./services/register-service";
+import { useAlert } from "../../components/AlertContext";
 
 export default function () {
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    emailError: "",
   });
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: registerUser,
+    onSuccess: (data) => {
+      if (data) {
+        navigate("/login");
+        showAlert({
+          message: "Pendaftaran berhasil, silahkan login",
+          type: "success",
+        });
+      }
+    },
+    onError: (error: Error) => {
+      showAlert({ message: error.message || "Gagal mendaftar", type: "error" });
+    },
+  });
+
+  function handleSubmit() {
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!pattern.test(formData.email)) {
+      setFormData((prev) => ({ ...prev, emailError: "Email tidak valid" }));
+      return;
+    }
+    mutateAsync({
+      ...formData,
+    });
+  }
 
   return (
     <div>
@@ -39,17 +71,18 @@ export default function () {
 
             <p className="font-medium mt-6">Email</p>
             <input
-              type="text"
+              type="email"
               placeholder="Masukkan email"
-              className="w-full py-2.5 px-3 rounded border border-[#A5A5A5] mt-2"
+              className={`w-full py-2.5 px-3 rounded border mt-2 ${formData.emailError ? "border-red-500" : "border-[#A5A5A5]"}`}
               onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
+                setFormData({ ...formData, email: e.target.value, emailError: "" })
               }
             />
+            <p className="text-xs text-red-500">{formData.emailError}</p>
 
-            <div className="mt-6">
+            <div className="mt-6 w-full">
               <p className="font-medium mb-2">Password</p>
-              <div className="relative w-full max-w-md">
+              <div className="relative w-full">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Masukkan password"
@@ -85,8 +118,10 @@ export default function () {
               disabled={
                 !formData.email ||
                 !formData.name ||
-                formData.password.length < 6
+                formData.password.length < 6 ||
+                isPending
               }
+              onClick={handleSubmit}
               className="w-full rounded-3xl mt-12"
             >
               Sign Up

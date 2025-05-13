@@ -5,7 +5,7 @@ import Document from "./components/Document";
 import Payment from "./components/Payment";
 
 export default function () {
-  const [selectedTab, setSelectedTab] = useState("Pembayaran");
+  const [selectedTab, setSelectedTab] = useState("Informasi Siswa");
 
   return (
     <div className="py-5 px-4 md:px-[60px] 2xl:py-7 2xl:px-28">

@@ -3,17 +3,48 @@ import Button from "../../components/Button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useMutation } from "@tanstack/react-query";
+import { useAlert } from "../../components/AlertContext";
+import { loginUser } from "./services/login-service";
 
 export default function () {
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    emailError: "",
   });
 
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      if (data) {
+        navigate("/student-registration");
+        showAlert({
+          message: "Login berhasil!",
+          type: "success",
+        });
+      }
+    },
+    onError: (error: Error) => {
+      showAlert({ message: error.message || "Gagal login", type: "error" });
+    },
+  });
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!pattern.test(formData.email)) {
+      setFormData((prev) => ({ ...prev, emailError: "Email tidak valid" }));
+      return;
+    }
+    mutateAsync({ ...formData });
+  }
+
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <div className="flex justify-center py-6 px-4 h-[92vh]">
         <div className="md:w-[50%] xl:w-[40%] flex flex-col gap-20 md:gap-32 mb-3 pt-7 md:px-[60px] 2xl:pt-10 2xl:px-28">
           <div>
@@ -29,15 +60,16 @@ export default function () {
             <input
               type="text"
               placeholder="Masukkan email"
-              className="w-full py-2.5 px-3 rounded border border-[#A5A5A5] mt-2"
+              className={`w-full py-2.5 px-3 rounded border mt-2 ${formData.emailError ? "border-red-500" : "border-[#A5A5A5]"}`}
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
             />
+            <p className="text-xs text-red-500">{formData.emailError}</p>
 
-            <div className="mt-6">
+            <div className="mt-6 w-full">
               <p className="font-medium mb-2">Password</p>
-              <div className="relative w-full max-w-md">
+              <div className="relative w-full">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Masukkan password"
@@ -70,7 +102,7 @@ export default function () {
             </div>
 
             <Button
-              disabled={!formData.email || formData.password.length < 6}
+              disabled={!formData.email || formData.password.length < 6 || isPending}
               className="w-full rounded-3xl mt-12"
             >
               Login
@@ -88,6 +120,6 @@ export default function () {
           className="hidden md:block w-[50%] xl:w-[60%] object-cover rounded-lg"
         />
       </div>
-    </div>
+    </form>
   );
 }
