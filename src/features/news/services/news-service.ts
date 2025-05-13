@@ -1,12 +1,15 @@
 export type NewsResponseType = {
-  data: {
-    title: string;
-    content: string;
-    thumbnail: string;
-  }[];
+  data: NewsDetailResponseType[];
   limit: number;
   page: number;
   total: number;
+}
+
+export type NewsDetailResponseType = {
+  id: number;
+  title: string;
+  content: string;
+  thumbnail: string;
 }
 
 export type NewsParamsType = {
@@ -26,5 +29,19 @@ export async function getNews({ page, limit, search }: NewsParamsType) {
     });
   const responseJson = await response.json();
   if (response.status === 200) return responseJson;
+  else throw new Error(responseJson.error);
+}
+
+export async function getNewsById(id: string): Promise<NewsDetailResponseType> {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/blogs/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+    });
+  const responseJson = await response.json();
+  if (response.status === 200) return responseJson.data;
   else throw new Error(responseJson.error);
 }

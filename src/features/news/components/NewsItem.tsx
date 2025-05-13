@@ -1,7 +1,21 @@
-function NewsItem({ title, content, thumbnail }: { title: string; content: string; thumbnail: string }) {
+import { useNavigate } from "react-router-dom";
+
+function NewsItem({
+  id,
+  title,
+  content,
+  thumbnail,
+}: {
+  id: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+}) {
+  const navigate = useNavigate();
+
   return (
-    <div className="mt-6 flex flex-col gap-2 w-1/3 items-center">
-      <div className="cursor-pointer">
+    <div className="mt-6 flex flex-col gap-2 w-full md:w-1/2 xl:w-1/3 items-center">
+      <div className="cursor-pointer" onClick={() => navigate(`/news/${id}`)}>
         <img
           src={thumbnail}
           alt=""

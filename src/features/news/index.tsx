@@ -61,7 +61,7 @@ export default function () {
           pageCount={pageCount}
           previousLabel="Previous"
           renderOnZeroPageCount={null}
-          className="flex flex-wrap mt-12 justify-center md:justify-end"
+          className="flex flex-wrap mt-6 justify-center md:justify-end"
           previousClassName="rounded-l text-gray-600 font-medium cursor-pointer border border-gray-300 px-2 py-1.5"
           nextClassName="rounded-r text-gray-600 font-medium cursor-pointer border border-gray-300 px-4 py-1.5"
           pageClassName="border border-gray-300 px-3 py-1.5"

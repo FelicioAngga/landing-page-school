@@ -10,6 +10,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import StudentRegistrationPage from "./pages/StudentRegistrationPage";
 import { AlertProvider } from "./components/AlertContext";
+import NewsDetail from "./pages/NewsDetail";
 
 function App() {
   const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/news" element={<NewsPage />} />
+            <Route path="/news/:id" element={<NewsDetail />} />
             <Route path="/student-registration" element={<StudentRegistrationPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
