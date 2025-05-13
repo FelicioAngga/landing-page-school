@@ -1,15 +1,17 @@
 import { IoMdCheckmark, IoMdClose } from "react-icons/io";
 import Button from "../../components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
 import { useAlert } from "../../components/AlertContext";
 import { loginUser } from "./services/login-service";
+import { isAuthenticated } from "../../utils/getAccessToken";
 
 export default function () {
   const navigate = useNavigate();
   const { showAlert } = useAlert();
+  const [ready, setReady] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -43,6 +45,13 @@ export default function () {
     mutateAsync({ ...formData });
   }
 
+  useEffect(() => {
+    if (isAuthenticated()) navigate(-1);
+    const timeoutId = setTimeout(() => setReady(true), 100);
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  if (!ready) return null;
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex justify-center py-6 px-4 h-[92vh]">

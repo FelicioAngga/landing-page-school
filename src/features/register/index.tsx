@@ -1,13 +1,15 @@
 import { IoMdCheckmark, IoMdClose } from "react-icons/io";
 import Button from "../../components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
 import { registerUser } from "./services/register-service";
 import { useAlert } from "../../components/AlertContext";
+import { isAuthenticated } from "../../utils/getAccessToken";
 
 export default function () {
+  const [ready, setReady] = useState(false);
   const navigate = useNavigate();
   const { showAlert } = useAlert();
   const [showPassword, setShowPassword] = useState(false);
@@ -45,6 +47,13 @@ export default function () {
     });
   }
 
+  useEffect(() => {
+    if (isAuthenticated()) navigate(-1);
+    const timeoutId = setTimeout(() => setReady(true), 100);
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  if (!ready) return null;
   return (
     <div>
       <div className="flex justify-center py-6 px-4 h-[92vh]">

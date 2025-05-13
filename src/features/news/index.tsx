@@ -3,20 +3,34 @@ import Footer from "./components/Footer";
 import NewsItem from "./components/NewsItem";
 import ReactPaginate from "react-paginate";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getNews, NewsResponseType } from "./services/news-service";
 
 export default function () {
-  const [itemOffset, setItemOffset] = useState(0);
-  const pageCount = Math.ceil(70 / 6);
+  const [search, setSearch] = useState("");
+  const [paginateData, setPaginateData] = useState({
+    page: 1,
+    limit: 6,
+    search: "",
+  });
+  const { data: newsData } = useQuery<NewsResponseType>({
+    queryKey: ["news", paginateData.page, paginateData.search],
+    queryFn: () => getNews(paginateData),
+  });
+
+  const pageCount = Math.ceil((newsData?.total || 0) / 6);
   const handlePageClick = (event: any) => {
-    const newOffset = (event.selected * 6) % 70;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}, itemOffset ${itemOffset}`
-    );
-    setItemOffset(newOffset);
+    setPaginateData((prev) => ({ ...prev, page: event.selected + 1 }));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setPaginateData((prev) => ({ ...prev, page: 1, search }));
+  }
+
   return (
-    <>
+    <form onSubmit={handleSubmit}>
       <div className="mb-3 py-5 px-4 md:px-[60px] 2xl:py-7 2xl:px-28">
         <p className="w-fit mx-auto text-2xl md:text-3xl font-bold">
           Berita Terbaru
@@ -28,16 +42,14 @@ export default function () {
           />
           <input
             type="text"
-            placeholder="Cari berita"
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Cari berita (Enter untuk mencari)"
             className="md:w-96 py-2 pr-3 pl-8 rounded border border-[#828282]"
           />
         </div>
-
-        {/* <div className="mt-10 flex flex-col items-center md:flex-row md:justify-between gap-6 flex-wrap"> */}
-        <div className="mt-10 grid grid-flow-col grid-rows-6 md:grid-rows-3 xl:grid-rows-2 gap-6">
-          {Array.from({ length: 6 }, (_, index) => (
-            <NewsItem key={index} />
-          ))}
+        
+        <div className="flex flex-wrap">
+          {newsData?.data.map((item, idx) => <NewsItem key={idx} {...item} />)}
         </div>
 
         <ReactPaginate
@@ -45,6 +57,7 @@ export default function () {
           nextLabel="Next"
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
+          forcePage={paginateData.page - 1}
           pageCount={pageCount}
           previousLabel="Previous"
           renderOnZeroPageCount={null}
@@ -57,6 +70,6 @@ export default function () {
         />
       </div>
       <Footer />
-    </>
+    </form>
   );
 }

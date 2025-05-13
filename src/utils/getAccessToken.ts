@@ -5,3 +5,5 @@ export function getAccessToken(): string | null {
   }
   return null;
 }
+
+export const isAuthenticated = (): boolean => !!getAccessToken()
