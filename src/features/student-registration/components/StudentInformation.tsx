@@ -1,14 +1,108 @@
 import { DatePicker, Input, Select } from "antd";
 import Button from "../../../components/Button";
+import { useEffect, useState } from "react";
+import { useAlert } from "../../../components/AlertContext";
+import dayjs from "dayjs";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { saveStudentInformation, StudentInformationType, updateStudentInformation } from "../services/student-information-service";
 
 type StudentInformationProps = {
   setSelectedTab: (tab: string) => void;
-}
+  studentData?: StudentInformationType;
+};
 
-function StudentInformation({ setSelectedTab }: StudentInformationProps) {
+function StudentInformation({ studentData, setSelectedTab }: StudentInformationProps) {
+  const { showAlert } = useAlert();
+  const queryClient = useQueryClient();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    placeOfBirth: "",
+    dateOfBirth: null,
+    religion: null,
+    siblingsCount: "",
+    siblingOrder: "",
+    livingWith: null,
+    familyStatus: "",
+    phoneNumber: "",
+    previousSchool: "",
+    address: "",
+    desiredEducationLevel: null,
+    major: null,
+  });
+  
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: studentData?.id ? updateStudentInformation : saveStudentInformation,
+    onSuccess: (data) => {
+      if (data) {
+        queryClient.invalidateQueries({ queryKey: ["student-information"] });
+        setSelectedTab("Informasi Wali");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        showAlert({
+          message: "Data berhasil disimpan!",
+          type: "success",
+        });
+      }
+    },
+    onError: (error: Error) => {
+      showAlert({ message: error.message || "Gagal Menyimpan", type: "error" });
+    },
+  })
+
   function handleNext() {
-    setSelectedTab("Informasi Wali");
+    if (!isAllFieldsFilled()) {
+      showAlert({
+        type: "error",
+        message: "Semua data harus diisi.",
+      })
+      return;
+    }
+    mutateAsync({
+      id: studentData?.id,
+      full_name: formData.name || "",
+      place_of_birth: formData.placeOfBirth,
+      date_of_birth: dayjs(formData.dateOfBirth as any).format("YYYY-MM-DD"),
+      address: formData.address,
+      phone: formData.phoneNumber,
+      religion: formData.religion as any,
+      child_sequence: parseInt(formData.siblingOrder.toString()),
+      number_of_siblings: parseInt(formData.siblingsCount.toString()),
+      living_with: formData.livingWith as any,
+      child_status: formData.familyStatus,
+      school_origin: formData.previousSchool,
+      registration_grade: formData.desiredEducationLevel as any,
+      registration_major: formData.major as any,
+    });
   }
+
+  function isAllFieldsFilled() {
+    return Object.values(formData).every((value) => {
+      if (typeof value === "string") {
+        return value.trim() !== "";
+      }
+      return value !== null && value !== undefined;
+    });
+  }
+
+  useEffect(() => {
+  if (studentData) {
+    setFormData({
+      name: studentData.full_name || "",
+      placeOfBirth: studentData.place_of_birth || "",
+      dateOfBirth: studentData.date_of_birth ? dayjs(studentData.date_of_birth) : null as any,
+      religion: studentData.religion || null as any,
+      siblingsCount: studentData.number_of_siblings || "" as any,
+      siblingOrder: studentData.child_sequence || "" as any,
+      livingWith: studentData.living_with || null as any,
+      familyStatus: studentData.child_status || "",
+      phoneNumber: studentData.phone || "",
+      previousSchool: studentData.school_origin || "",
+      address: studentData.address || "",
+      desiredEducationLevel: studentData.registration_grade || null as any,
+      major: studentData.registration_major || null as any,
+    });
+  }
+}, [studentData]);
 
   return (
     <div className="mt-5 md:mt-12">
@@ -20,32 +114,59 @@ function StudentInformation({ setSelectedTab }: StudentInformationProps) {
         <p className="2xl:text-lg font-bold">Data Siswa</p>
         <div className="mt-3 flex flex-col gap-4 md:w-[600px] px-6 py-4 border rounded-lg">
           <div>
-            <p className="text-sm mb-1 font-medium">Nama Lengkap <span className="text-red-500">*</span></p>
+            <p className="text-sm mb-1 font-medium">
+              Nama Lengkap <span className="text-red-500">*</span>
+            </p>
             <Input
               placeholder="Nama Lengkap"
               className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
             />
           </div>
 
           <div className="flex gap-6">
             <div className="w-full">
-              <p className="text-sm mb-1 font-medium">Tempat Lahir <span className="text-red-500">*</span></p>
+              <p className="text-sm mb-1 font-medium">
+                Tempat Lahir <span className="text-red-500">*</span>
+              </p>
               <Input
                 placeholder="Tempat Lahir"
                 className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+                value={formData.placeOfBirth}
+                onChange={(e) =>
+                  setFormData({ ...formData, placeOfBirth: e.target.value })
+                }
               />
             </div>
             <div className="w-full">
-              <p className="text-sm mb-1 font-medium">Tanggal Lahir <span className="text-red-500">*</span></p>
-              <DatePicker className="w-full py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]" />
+              <p className="text-sm mb-1 font-medium">
+                Tanggal Lahir <span className="text-red-500">*</span>
+              </p>
+              <DatePicker
+                className="w-full py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+                placeholder="Tanggal Lahir"
+                allowClear={false}
+                value={formData.dateOfBirth ? dayjs(formData.dateOfBirth) : null}
+                onChange={(date) => {
+                    setFormData({ ...formData, dateOfBirth: dayjs(date).format("YYYY-MM-DD") as any })
+                  }
+                }
+              />
             </div>
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">Agama <span className="text-red-500">*</span></p>
+            <p className="text-sm mb-1 font-medium">
+              Agama <span className="text-red-500">*</span>
+            </p>
             <Select
               placeholder="Pilih Agama"
               className="w-full h-10 text-sm rounded-md border border-gray-400 placeholder:text-[#A5A5A5]"
+              value={formData.religion}
+              onChange={(value) => setFormData({ ...formData, religion: value })}
             >
               <Select.Option value="buddha">Buddha</Select.Option>
               <Select.Option value="kritenProtestan">
@@ -59,29 +180,53 @@ function StudentInformation({ setSelectedTab }: StudentInformationProps) {
 
           <div className="flex gap-6">
             <div className="w-full">
-              <p className="text-sm mb-1 font-medium whitespace-nowrap">Jumlah Saudara <span className="text-red-500">*</span></p>
+              <p className="text-sm mb-1 font-medium whitespace-nowrap">
+                Jumlah Saudara <span className="text-red-500">*</span>
+              </p>
               <Input
                 type="number"
                 placeholder="Jumlah Saudara"
                 className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+                value={formData.siblingsCount}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    siblingsCount: e.target.value,
+                  })
+                }
               />
             </div>
 
             <div className="w-full">
-              <p className="text-sm mb-1 font-medium">Saudara Ke <span className="text-red-500">*</span></p>
+              <p className="text-sm mb-1 font-medium">
+                Saudara Ke <span className="text-red-500">*</span>
+              </p>
               <Input
                 type="number"
                 placeholder="Saudara Ke"
                 className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+                value={formData.siblingOrder}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    siblingOrder: e.target.value,
+                  })
+                }
               />
             </div>
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">Tinggal Bersama <span className="text-red-500">*</span></p>
+            <p className="text-sm mb-1 font-medium">
+              Tinggal Bersama <span className="text-red-500">*</span>
+            </p>
             <Select
               placeholder="Pilih Dimana Siswa Tinggal"
               className="w-full h-10 text-sm rounded-md border border-gray-400 placeholder:text-[#A5A5A5]"
+              value={formData.livingWith}
+              onChange={(value) =>
+                setFormData({ ...formData, livingWith: value })
+              }
             >
               <Select.Option value="parent">Orang Tua</Select.Option>
               <Select.Option value="family">Keluarga</Select.Option>
@@ -98,39 +243,71 @@ function StudentInformation({ setSelectedTab }: StudentInformationProps) {
             <Input
               placeholder="Status Diri Dalam Keluarga"
               className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+              value={formData.familyStatus}
+              onChange={(e) =>
+                setFormData({ ...formData, familyStatus: e.target.value })
+              }
             />
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">No Telepon <span className="text-red-500">*</span></p>
+            <p className="text-sm mb-1 font-medium">
+              No Telepon <span className="text-red-500">*</span>
+            </p>
             <Input
               type="number"
-              placeholder="Status Diri Dalam Keluarga"
+              placeholder="No Telepon"
               className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+              value={formData.phoneNumber}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  phoneNumber: e.target.value,
+                })
+              }
             />
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">Pindahan dari Sekolah <span className="text-red-500">*</span></p>
+            <p className="text-sm mb-1 font-medium">
+              Pindahan dari Sekolah <span className="text-red-500">*</span>
+            </p>
             <Input
               placeholder="Pindahan dari Sekolah"
               className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+              value={formData.previousSchool}
+              onChange={(e) =>
+                setFormData({ ...formData, previousSchool: e.target.value })
+              }
             />
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">Alamat Siswa <span className="text-red-500">*</span></p>
+            <p className="text-sm mb-1 font-medium">
+              Alamat Siswa <span className="text-red-500">*</span>
+            </p>
             <Input
               placeholder="Alamat Siswa"
               className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+              value={formData.address}
+              onChange={(e) =>
+                setFormData({ ...formData, address: e.target.value })
+              }
             />
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">Jenjang Pendidikan yang Diinginkan <span className="text-red-500">*</span></p>
+            <p className="text-sm mb-1 font-medium">
+              Jenjang Pendidikan yang Diinginkan{" "}
+              <span className="text-red-500">*</span>
+            </p>
             <Select
               placeholder="Pilih Jenjang"
               className="w-full h-10 text-sm rounded-md border border-gray-400 placeholder:text-[#A5A5A5]"
+              value={formData.desiredEducationLevel}
+              onChange={(value) =>
+                setFormData({ ...formData, desiredEducationLevel: value })
+              }
             >
               <Select.Option value="sma3">SMA 3</Select.Option>
               <Select.Option value="sma2">SMA 2</Select.Option>
@@ -150,10 +327,14 @@ function StudentInformation({ setSelectedTab }: StudentInformationProps) {
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">Jurusan <span className="text-red-500">*</span></p>
+            <p className="text-sm mb-1 font-medium">
+              Jurusan <span className="text-red-500">*</span>
+            </p>
             <Select
               placeholder="Pilih Jurusan"
               className="w-full h-10 text-sm rounded-md border border-gray-400 placeholder:text-[#A5A5A5]"
+              value={formData.major}
+              onChange={(value) => setFormData({ ...formData, major: value })}
             >
               <Select.Option value="general">General</Select.Option>
               <Select.Option value="mipa">MIPA</Select.Option>
@@ -162,7 +343,13 @@ function StudentInformation({ setSelectedTab }: StudentInformationProps) {
           </div>
         </div>
 
-        <Button className="font-bold w-full mt-5" onClick={handleNext}>Berikutnya</Button>
+        <Button 
+          className="font-bold w-full mt-5" 
+          onClick={handleNext}
+          disabled={!isAllFieldsFilled() || isPending} 
+        >
+          Berikutnya
+        </Button>
       </div>
     </div>
   );
