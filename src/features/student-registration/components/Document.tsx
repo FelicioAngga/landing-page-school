@@ -4,6 +4,7 @@ import { Upload } from 'antd';
 import { useEffect, useState } from "react";
 import { IoMdDocument } from "react-icons/io";
 import { useAlert } from "../../../components/AlertContext";
+import { fileToBase64 } from "../../../utils/base64";
 
 type DocumentProps = {
   setSelectedTab: (tab: string) => void;
@@ -91,8 +92,13 @@ function Document({ setSelectedTab }: DocumentProps) {
     }
   };
 
-  function handleNext() {
-    
+  async function handleNext() {
+    if (familyCardInfo.file && birthCertificateInfo.file && guardianIdInfo.file) {
+      const familyCardBase64 = await fileToBase64(familyCardInfo.file)
+      const birthCertificateBase64 = await fileToBase64(birthCertificateInfo.file)
+      const guardianIdBase64 = await fileToBase64(guardianIdInfo.file)
+      
+    }
     // setSelectedTab("Pembayaran");
   }
 
