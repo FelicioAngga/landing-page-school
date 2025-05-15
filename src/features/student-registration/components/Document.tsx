@@ -5,32 +5,50 @@ import { useEffect, useState } from "react";
 import { IoMdDocument } from "react-icons/io";
 import { useAlert } from "../../../components/AlertContext";
 import { fileToBase64 } from "../../../utils/base64";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createDocument, DocsTypeResponse, DocumentType, getDocumentType, updateDocument } from "../services/document-service";
 
 type DocumentProps = {
   setSelectedTab: (tab: string) => void;
+  applicantId?: number;
+  documentData?: DocumentType[];
 };
 
-function Document({ setSelectedTab }: DocumentProps) {
+function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) {
   const { Dragger } = Upload;
+  const queryClient = useQueryClient();
   const { showAlert } = useAlert();
+  const { data: docsType } = useQuery({
+    queryFn: () => getDocumentType(),
+    queryKey: ["document-type"],
+    retryDelay: 1000 * 60 * 0.5,
+  });
   const [familyCardInfo, setFamilyCardInfo] = useState({
+    id: 0,
     preview: "",
     name: "",
     file: null,
   });
 
   const [birthCertificateInfo, setBirthCertificateInfo] = useState({
+    id: 0,
     preview: "",
     name: "",
     file: null,
   });
 
   const [guardianIdInfo, setGuardianIdInfo] = useState({
+    id: 0,
     preview: "",
     name: "",
     file: null,
   });
 
+  const [docsTypeInfo, setDocsTypeInfo] = useState({
+    familyCardId: 0,
+    birthCertificateId: 0,
+    guardianId: 0,
+  });
   
   const propsFamilyCard: UploadProps = {
     name: 'file',
@@ -43,11 +61,12 @@ function Document({ setSelectedTab }: DocumentProps) {
           return;
         }
         const previewUrl = URL.createObjectURL(file);
-        setFamilyCardInfo({
+        setFamilyCardInfo(prev => ({
+          ...prev,
           preview: previewUrl,
           name: info.file.name,
           file: file as any,
-        });
+        }));
       }
     }
   };
@@ -63,11 +82,12 @@ function Document({ setSelectedTab }: DocumentProps) {
           return;
         }
         const previewUrl = URL.createObjectURL(file);
-        setBirthCertificateInfo({
+        setBirthCertificateInfo(prev => ({
+          ...prev,
           preview: previewUrl,
           name: info.file.name,
           file: file as any,
-        });
+        }));
       }
     }
   };
@@ -83,31 +103,122 @@ function Document({ setSelectedTab }: DocumentProps) {
           return;
         }
         const previewUrl = URL.createObjectURL(file);
-        setGuardianIdInfo({
+        setGuardianIdInfo(prev => ({
+          ...prev,
           preview: previewUrl,
           name: info.file.name,
           file: file as any,
-        });
+        }));
       }
     }
   };
 
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: async (data: DocumentType[]) => {
+      const promises = data.map(async (doc) => {
+        if ((documentData?.length || 0) > 0) await updateDocument(doc);
+        else await createDocument(doc);
+      });
+      await Promise.all(promises);
+    },
+    onSuccess: () => {
+      showAlert({ message: "Dokumen berhasil diupload", type: "success" });
+      if (!documentData?.length) setSelectedTab("Pembayaran");
+      queryClient.invalidateQueries({
+        queryKey: ["document-information"],
+      });
+    },
+    onError: (error: any) => {
+      showAlert({ message: error.message || "Gagal mengupload dokumen", type: "error" });
+    },
+  });
+
   async function handleNext() {
-    if (familyCardInfo.file && birthCertificateInfo.file && guardianIdInfo.file) {
-      const familyCardBase64 = await fileToBase64(familyCardInfo.file)
-      const birthCertificateBase64 = await fileToBase64(birthCertificateInfo.file)
-      const guardianIdBase64 = await fileToBase64(guardianIdInfo.file)
-      
+    const documentsToUpload = [];
+    if (!applicantId) return;
+    if (familyCardInfo.file) {
+      const base64 = await fileToBase64(familyCardInfo.file);
+      documentsToUpload.push({
+        id: familyCardInfo.id,
+        type_id: docsTypeInfo.familyCardId,
+        applicant_id: applicantId,
+        uploaded_file: base64,
+        description: familyCardInfo.name,
+      });
     }
-    // setSelectedTab("Pembayaran");
+    if (birthCertificateInfo.file) {
+      const base64 = await fileToBase64(birthCertificateInfo.file);
+      documentsToUpload.push({
+        id: birthCertificateInfo.id,
+        type_id: docsTypeInfo.birthCertificateId,
+        applicant_id: applicantId,
+        uploaded_file: base64,
+        description: birthCertificateInfo.name,
+      });
+    }
+    if (guardianIdInfo.file) {
+      const base64 = await fileToBase64(guardianIdInfo.file);
+      documentsToUpload.push({
+        id: guardianIdInfo.id,
+        type_id: docsTypeInfo.guardianId,
+        applicant_id: applicantId,
+        uploaded_file: base64,
+        description: guardianIdInfo.name,
+      });
+    }
+
+    if (documentsToUpload.length > 0) await mutateAsync(documentsToUpload);
   }
 
   useEffect(() => {
-  return () => {
-    if (familyCardInfo.preview) URL.revokeObjectURL(familyCardInfo.preview);
-    if (birthCertificateInfo.preview) URL.revokeObjectURL(birthCertificateInfo.preview);
-    if (guardianIdInfo.preview) URL.revokeObjectURL(guardianIdInfo.preview);
-  };
+    if (!docsType) return;
+
+    const getTypeId = (name: string) => docsType.find((doc: DocsTypeResponse) => doc.name === name)?.id;
+
+    const typeInfo = {
+      familyCardId: getTypeId("kartu keluarga"),
+      birthCertificateId: getTypeId("akte lahir"),
+      guardianId: getTypeId("ktp wali"),
+    };
+    setDocsTypeInfo(typeInfo);
+
+    if (!documentData?.length) return;
+    const familyCard = documentData.find((doc) => doc.type_id === typeInfo.familyCardId);
+    const birthCertificate = documentData.find((doc) => doc.type_id === typeInfo.birthCertificateId);
+    const guardianId = documentData.find((doc) => doc.type_id === typeInfo.guardianId);
+
+    if (familyCard) {
+      setFamilyCardInfo({
+        id: familyCard.id || 0,
+        preview: familyCard.uploaded_file,
+        name: familyCard.description,
+        file: null,
+      });
+    }
+    if (birthCertificate) {
+      setBirthCertificateInfo({
+        id: birthCertificate.id || 0,
+        preview: birthCertificate.uploaded_file,
+        name: birthCertificate.description,
+        file: null,
+      });
+    }
+    if (guardianId) {
+      setGuardianIdInfo({
+        id: guardianId.id || 0,
+        preview: guardianId.uploaded_file,
+        name: guardianId.description,
+        file: null,
+      });
+    }
+  }, [documentData, docsType]);
+
+  useEffect(() => {
+    return () => {
+      if (familyCardInfo.preview) URL.revokeObjectURL(familyCardInfo.preview);
+      if (birthCertificateInfo.preview) URL.revokeObjectURL(birthCertificateInfo.preview);
+      if (guardianIdInfo.preview) URL.revokeObjectURL(guardianIdInfo.preview);
+    };
 }, [familyCardInfo, birthCertificateInfo, guardianIdInfo]);
 
   return (
@@ -178,7 +289,7 @@ function Document({ setSelectedTab }: DocumentProps) {
         </div>
       </div>
       <Button 
-        disabled={familyCardInfo.file === null || birthCertificateInfo.file === null || guardianIdInfo.file === null}
+        disabled={!familyCardInfo.preview || !birthCertificateInfo.preview || !guardianIdInfo.preview || isPending}
         className="max-w-md flex justify-center mx-auto font-bold w-full mt-5" 
         onClick={handleNext}
       >

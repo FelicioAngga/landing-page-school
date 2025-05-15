@@ -15,6 +15,7 @@ export type StudentInformationType = {
   school_origin: string;
   registration_grade: string;
   registration_major: string;
+  state?: string;
 }
 
 export async function getStudentInformation(): Promise<StudentInformationType> {

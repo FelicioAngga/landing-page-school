@@ -36,7 +36,7 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
     mutationFn: (guardianData?.length || 0) > 0 ? updateGuardianInformation : saveGuardianInformation,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["guardian-information"] });
-      setSelectedTab("Dokumen");
+      if (!((guardianData?.length || 0) > 0)) setSelectedTab("Dokumen");
       window.scrollTo({ top: 0, behavior: "smooth" });
       showAlert({
         message: "Data berhasil disimpan!",
