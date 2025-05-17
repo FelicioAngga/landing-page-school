@@ -30,7 +30,7 @@ export default function () {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="min-h-[93vh] flex flex-col justify-between">
       <div className="mb-3 py-5 px-4 md:px-[60px] 2xl:py-7 2xl:px-28">
         <p className="w-fit mx-auto text-2xl md:text-3xl font-bold">
           Berita Terbaru

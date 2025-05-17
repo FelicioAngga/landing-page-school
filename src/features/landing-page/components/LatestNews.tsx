@@ -20,7 +20,7 @@ function LatestNews() {
         <p className="text-2xl md:text-4xl font-bold">Berita Terbaru</p>
         <a
           onClick={() => navigate("/news")}
-          className="text-sm md:text-base h-fit my-auto underline font-bold text-[#637587]"
+          className="text-sm md:text-base h-fit my-auto underline font-bold text-[#637587] cursor-pointer"
         >
           Lihat Semua
         </a>
