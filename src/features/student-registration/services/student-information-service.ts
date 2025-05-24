@@ -13,6 +13,7 @@ export type StudentInformationType = {
   living_with: string;
   child_status: string;
   school_origin: string;
+  level_id: number;
   registration_grade: string;
   registration_major: string;
   state?: string;
@@ -69,5 +70,20 @@ export async function updateStudentInformation(data: StudentInformationType) {
     });
   const responseJson = await response.json();
   if (response.status === 200) return responseJson;
+  else throw new Error(responseJson.error);
+}
+
+export async function getGrades(): Promise<any[]> {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/levels?limit=9999`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": `Bearer ${getAccessToken()}`,
+      },
+    });
+  const responseJson = await response.json();
+  if (response.status === 200) return responseJson.data;
   else throw new Error(responseJson.error);
 }

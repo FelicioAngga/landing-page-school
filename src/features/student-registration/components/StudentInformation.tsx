@@ -3,8 +3,8 @@ import Button from "../../../components/Button";
 import { useEffect, useState } from "react";
 import { useAlert } from "../../../components/AlertContext";
 import dayjs from "dayjs";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { saveStudentInformation, StudentInformationType, updateStudentInformation } from "../services/student-information-service";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getGrades, saveStudentInformation, StudentInformationType, updateStudentInformation } from "../services/student-information-service";
 
 type StudentInformationProps = {
   setSelectedTab: (tab: string) => void;
@@ -27,9 +27,14 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
     phoneNumber: "",
     previousSchool: "",
     address: "",
-    desiredEducationLevel: null,
+    level_id: null,
     major: null,
   });
+
+  const { data: gradeData } = useQuery({
+    queryFn: getGrades,
+    queryKey: ["grades"]
+  })
   
   const { mutateAsync, isPending } = useMutation({
     mutationFn: studentData?.id ? updateStudentInformation : saveStudentInformation,
@@ -67,10 +72,11 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
       religion: formData.religion as any,
       child_sequence: parseInt(formData.siblingOrder.toString()),
       number_of_siblings: parseInt(formData.siblingsCount.toString()),
+      level_id: formData.level_id as any,
       living_with: formData.livingWith as any,
       child_status: formData.familyStatus,
       school_origin: formData.previousSchool,
-      registration_grade: formData.desiredEducationLevel as any,
+      registration_grade: gradeData?.find(grade => grade.id === formData.level_id)?.name as any,
       registration_major: formData.major as any,
     });
   }
@@ -98,7 +104,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
       phoneNumber: studentData.phone || "",
       previousSchool: studentData.school_origin || "",
       address: studentData.address || "",
-      desiredEducationLevel: studentData.registration_grade || null as any,
+      level_id: studentData.registration_grade || null as any,
       major: studentData.registration_major || null as any,
     });
   }
@@ -304,25 +310,16 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
             <Select
               placeholder="Pilih Jenjang"
               className="w-full h-10 text-sm rounded-md border border-gray-400 placeholder:text-[#A5A5A5]"
-              value={formData.desiredEducationLevel}
+              value={formData.level_id}
               onChange={(value) =>
-                setFormData({ ...formData, desiredEducationLevel: value })
+                setFormData({ ...formData, level_id: value })
               }
             >
-              <Select.Option value="sma3">SMA 3</Select.Option>
-              <Select.Option value="sma2">SMA 2</Select.Option>
-              <Select.Option value="sma1">SMA 1</Select.Option>
-              <Select.Option value="smp3">SMP 3</Select.Option>
-              <Select.Option value="smp2">SMP 2</Select.Option>
-              <Select.Option value="smp1">SMP 1</Select.Option>
-              <Select.Option value="sd6">SD 6</Select.Option>
-              <Select.Option value="sd5">SD 5</Select.Option>
-              <Select.Option value="sd4">SD 4</Select.Option>
-              <Select.Option value="sd3">SD 3</Select.Option>
-              <Select.Option value="sd2">SD 2</Select.Option>
-              <Select.Option value="sd1">SD 1</Select.Option>
-              <Select.Option value="tk">TK</Select.Option>
-              <Select.Option value="pg">PG</Select.Option>
+              {gradeData?.map((grade: any) => (
+                <Select.Option key={grade.id} value={grade.id}>
+                  {grade.name}
+                </Select.Option>
+              ))}
             </Select>
           </div>
 
