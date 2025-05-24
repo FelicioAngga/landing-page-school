@@ -29,6 +29,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
     address: "",
     level_id: null,
     major: null,
+    identity_no: "",
   });
 
   const { data: gradeData } = useQuery({
@@ -65,6 +66,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
     mutateAsync({
       id: studentData?.id,
       full_name: formData.name || "",
+      identity_no: formData?.identity_no || "",
       place_of_birth: formData.placeOfBirth,
       date_of_birth: dayjs(formData.dateOfBirth as any).format("YYYY-MM-DD"),
       address: formData.address,
@@ -94,6 +96,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
   if (studentData) {
     setFormData({
       name: studentData.full_name || "",
+      identity_no: studentData.identity_no || "",
       placeOfBirth: studentData.place_of_birth || "",
       dateOfBirth: studentData.date_of_birth ? dayjs(studentData.date_of_birth) : null as any,
       religion: studentData.religion || null as any,
@@ -104,7 +107,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
       phoneNumber: studentData.phone || "",
       previousSchool: studentData.school_origin || "",
       address: studentData.address || "",
-      level_id: studentData.registration_grade || null as any,
+      level_id: studentData.level_id || null as any,
       major: studentData.registration_major || null as any,
     });
   }
@@ -129,6 +132,20 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <p className="text-sm mb-1 font-medium">
+              NIK <span className="text-red-500">*</span>
+            </p>
+            <Input
+              type="number"
+              placeholder="NIK"
+              className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+              value={formData.identity_no}
+              onChange={(e) =>
+                setFormData({ ...formData, identity_no: e.target.value })
               }
             />
           </div>

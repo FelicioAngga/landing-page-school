@@ -2,6 +2,7 @@ import { getAccessToken } from "../../../utils/getAccessToken";
 
 export type StudentInformationType = {
   id?: number;
+  identity_no: string;
   full_name: string;
   place_of_birth: string;
   date_of_birth: string;
@@ -21,7 +22,7 @@ export type StudentInformationType = {
 
 export async function getStudentInformation(): Promise<StudentInformationType> {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/applicants/my-information`, {
+    `${import.meta.env.VITE_API_URL}/applicants/my`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
