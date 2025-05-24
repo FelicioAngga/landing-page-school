@@ -18,6 +18,8 @@ export default function () {
     email: "",
     password: "",
     emailError: "",
+    confirmPassword: "",
+    confirmPasswordError: "",
   });
 
   const { mutateAsync, isPending } = useMutation({
@@ -40,6 +42,13 @@ export default function () {
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!pattern.test(formData.email)) {
       setFormData((prev) => ({ ...prev, emailError: "Email tidak valid" }));
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setFormData((prev) => ({
+        ...prev,
+        confirmPasswordError: "Password tidak sama",
+      }));
       return;
     }
     mutateAsync({
@@ -107,6 +116,20 @@ export default function () {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </div>
               </div>
+
+              <p className="font-medium mt-6 mb-2">Konfirmasi Password</p>
+              <div className="relative w-full">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Masukkan ulang password"
+                  className={`w-full py-2.5 px-3 rounded border ${formData.confirmPasswordError ? "border-red-500" : "border-[#A5A5A5]"}`}
+                  onChange={(e) =>
+                    setFormData({ ...formData, confirmPassword: e.target.value })
+                  }
+                />
+                <p className="text-xs text-red-500">{formData.confirmPasswordError}</p>
+              </div>
+
               <p
                 className={`${
                   formData.password.length >= 6

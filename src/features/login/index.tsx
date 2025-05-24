@@ -93,7 +93,7 @@ export default function () {
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </div>
-              </div>
+              </div>   
               <p
                 className={`${
                   formData.password.length >= 6
