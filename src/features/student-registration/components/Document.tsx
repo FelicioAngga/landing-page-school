@@ -23,6 +23,7 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
     queryKey: ["document-type"],
     retryDelay: 1000 * 60 * 0.5,
   });
+
   const [familyCardInfo, setFamilyCardInfo] = useState({
     id: 0,
     preview: "",
@@ -144,6 +145,7 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
         applicant_id: applicantId,
         uploaded_file: base64,
         description: familyCardInfo.name,
+        name: familyCardInfo.name
       });
     }
     if (birthCertificateInfo.file) {
@@ -154,6 +156,7 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
         applicant_id: applicantId,
         uploaded_file: base64,
         description: birthCertificateInfo.name,
+        name: birthCertificateInfo.name,
       });
     }
     if (guardianIdInfo.file) {
@@ -164,6 +167,7 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
         applicant_id: applicantId,
         uploaded_file: base64,
         description: guardianIdInfo.name,
+        name: guardianIdInfo.name
       });
     }
 

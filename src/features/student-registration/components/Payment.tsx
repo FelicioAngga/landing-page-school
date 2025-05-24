@@ -76,6 +76,7 @@ function Payment({ documentData, applicant_id }: PaymentProps) {
       applicant_id,
       uploaded_file: base64,
       description: paymentInfo.name,
+      name: paymentInfo.name,
     });
   }
 

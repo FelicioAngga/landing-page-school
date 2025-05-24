@@ -2,6 +2,7 @@ import { getAccessToken } from "../../../utils/getAccessToken";
 
 export type DocumentType = {
   id?: number;
+  name: string;
   type_id: number;
   applicant_id: number;
   uploaded_file: string;
