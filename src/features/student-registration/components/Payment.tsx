@@ -53,7 +53,7 @@ function Payment({ documentData, applicant_id }: PaymentProps) {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: documentData?.find(doc => doc.type_id === 
-      docsType?.find((docType: any) => docType.name === "pembayaran").id) ? updateDocument : createDocument,
+      docsType?.find((docType: any) => docType.name === "pembayaran")?.id) ? updateDocument : createDocument,
     onSuccess: () => {
       showAlert({ message: "Bukti pembayaran berhasil diupload", type: "success" });
       queryClient.invalidateQueries({

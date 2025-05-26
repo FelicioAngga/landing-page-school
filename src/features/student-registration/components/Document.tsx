@@ -117,7 +117,7 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (data: DocumentType[]) => {
       const promises = data.map(async (doc) => {
-        if ((documentData?.length || 0) > 0) await updateDocument(doc);
+        if (doc.id) await updateDocument(doc);
         else await createDocument(doc);
       });
       await Promise.all(promises);
