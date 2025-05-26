@@ -177,7 +177,7 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
   useEffect(() => {
     if (!docsType) return;
 
-    const getTypeId = (name: string) => docsType.find((doc: DocsTypeResponse) => doc.name === name)?.id;
+    const getTypeId = (name: string) => docsType.find((doc: DocsTypeResponse) => doc.name.toLowerCase() === name)?.id;
 
     const typeInfo = {
       familyCardId: getTypeId("kartu keluarga"),
