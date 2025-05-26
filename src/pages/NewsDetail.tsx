@@ -3,7 +3,7 @@ import NavigationBar from "../components/NavigationBar";
 import { useQuery } from "@tanstack/react-query";
 import { getNewsById, NewsDetailResponseType } from "../features/news/services/news-service";
 import { BiChevronLeft } from "react-icons/bi";
-
+import parse from "html-react-parser";
 
 function NewsDetail() {
   const { id } = useParams();
@@ -25,7 +25,7 @@ function NewsDetail() {
         <div className="flex flex-col-reverse md:flex-row gap-5 md:gap-10 justify-between">
           <div>
             <p className="text-3xl font-bold">{data?.title}</p>
-            <p className="mt-3 md:mt-5">{data?.content}</p>
+            <p className="mt-3 md:mt-5">{parse(data?.content || "")}</p>
           </div>
           <img src={data?.thumbnail} loading="lazy" className="w-80 h-80 object-cover rounded-md" />
         </div>

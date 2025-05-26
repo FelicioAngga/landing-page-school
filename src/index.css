@@ -33,3 +33,20 @@
 input:focus-visible {
   outline: none;
 }
+
+ol > li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+ol > li > .ql-ui {
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 0.3em;
+  height: 0.3em;
+  background-color: currentColor;
+  border-radius: 50%;
+  content: "";
+  display: inline-block;
+}
