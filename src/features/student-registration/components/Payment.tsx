@@ -53,7 +53,7 @@ function Payment({ documentData, applicant_id }: PaymentProps) {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: documentData?.find(doc => doc.type_id === 
-      docsType?.find((docType: any) => docType.name === "pembayaran")?.id) ? updateDocument : createDocument,
+      docsType?.find((docType: any) => docType.name.toLowerCase() === "pembayaran")?.id) ? updateDocument : createDocument,
     onSuccess: () => {
       showAlert({ message: "Bukti pembayaran berhasil diupload", type: "success" });
       queryClient.invalidateQueries({
@@ -68,7 +68,7 @@ function Payment({ documentData, applicant_id }: PaymentProps) {
   async function handleNext() {
     if (!paymentInfo.file || !applicant_id) return;
     const base64 = await fileToBase64(paymentInfo.file);
-    const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name === "pembayaran")?.id;
+    const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name.toLowerCase() === "pembayaran")?.id;
     const docPayment = documentData?.find((doc: DocumentType) => doc.type_id === docPaymentTypeId);
     mutateAsync({
       id: docPayment?.id,
@@ -82,7 +82,7 @@ function Payment({ documentData, applicant_id }: PaymentProps) {
 
   useEffect(() => {
     if (!documentData?.length || !docsType) return;
-    const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name === "pembayaran")?.id;
+    const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name.toLowerCase() === "pembayaran")?.id;
     const docPayment = documentData?.find((doc: DocumentType) => doc.type_id === docPaymentTypeId);
     setPaymentInfo({
       id: docPayment?.id || 0,
