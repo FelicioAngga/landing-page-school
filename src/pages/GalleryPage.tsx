@@ -53,11 +53,26 @@ function GalleryPage() {
   ];
 
   const eventImages = [
-    "images/event1.png",
-    "images/event2.png",
-    "images/event3.png",
-    "images/event4.png",
-    "images/event5.png",
+    {
+      src: "images/event1.jpg",
+      name: "Acara Kelulusan"
+    },
+    {
+      src: "images/event2.jpg",
+      name: "Acara Tahunan"
+    },
+    {
+      src: "images/event3.jpg",
+      name: "Drumband"
+    },
+    {
+      src: "images/event4.jpg",
+      name: "Bazaar Sekolah"
+    },
+    {
+      src: "images/event5.jpg",
+      name: "Foto Bersama"
+    },
   ];
 
   return (
@@ -84,12 +99,14 @@ function GalleryPage() {
           <p className="w-fit mx-auto font-bold text-2xl">Acara Sekolah</p>
           <Slider {...settings} className="mt-4">
             {eventImages.map((image, index) => (
-              <div className="px-2" key={index}>
+              <div className="relative px-2" key={index}>
                 <img
-                  src={image}
-                  alt="Classroom 1"
-                  className="h-64 w-full object-cover rounded"
+                  src={image.src}
+                  alt="Event 1"
+                  className="h-64 w-full object-cover rounded z-10"
                 />
+                <div className="transition-opacity rounded bg-black opacity-0 hover:opacity-40 absolute peer top-0 h-64 w-[444px]"></div>
+                <div className="transition-opacity opacity-0 peer-hover:opacity-100 absolute text-white top-[45%] inset-x-0 mx-auto w-fit">{image.name}</div>
               </div>
             ))}
           </Slider>
