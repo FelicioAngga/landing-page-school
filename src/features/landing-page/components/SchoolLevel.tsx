@@ -13,15 +13,15 @@ function SchoolLevel() {
           </p>
         </div>
         <img
-          src="/images/pg.png"
-          className="object-cover 2xl:w-[60%] rounded-xl"
+          src="/images/pg.jpg"
+          className="object-cover rounded-xl shrink-0 w-[480px] max-h-[275px] 2xl:h-[360px]"
         />
       </div>
 
       <div className="flex flex-col md:flex-row gap-3 md:gap-10 justify-between">
         <img
-          src="/images/pg.png"
-          className="object-cover 2xl:w-[60%] rounded-xl"
+          src="/images/tk.jpg"
+          className="object-cover rounded-xl shrink-0 w-[480px] max-h-[275px] 2xl:h-[360px]"
         />
         <div>
           <p className="text-2xl md:text-3xl font-bold">Taman Kanak-kanak (TK)</p>
@@ -48,15 +48,15 @@ function SchoolLevel() {
           </p>
         </div>
         <img
-          src="/images/sd.png"
-          className="object-cover 2xl:w-[60%] rounded-xl"
+          src="/images/sd.jpg"
+          className="object-cover rounded-xl shrink-0 w-[480px] max-h-[275px] 2xl:h-[360px]"
         />
       </div>
 
       <div className="flex flex-col md:flex-row gap-3 md:gap-10 justify-between">
         <img
-          src="/images/smp.png"
-          className="object-cover 2xl:w-[60%] rounded-xl"
+          src="/images/smp.jpg"
+          className="object-cover rounded-xl shrink-0 w-[480px] max-h-[275px] 2xl:h-[360px]"
         />
         <div>
           <p className="text-2xl md:text-3xl font-bold">Sekolah Menengah Pertama (SMP)</p>
@@ -84,8 +84,8 @@ function SchoolLevel() {
           </p>
         </div>
         <img
-          src="/images/sma.png"
-          className="object-cover 2xl:w-[60%] rounded-xl"
+          src="/images/sma.jpg"
+          className="object-cover rounded-xl shrink-0 w-[480px] max-h-[275px] 2xl:h-[360px]"
         />
       </div>
     </div>

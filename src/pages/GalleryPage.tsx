@@ -30,24 +30,22 @@ function GalleryPage() {
   };
 
   const classRoomImages = [
-    "images/class1.png",
-    "images/class2.png",
+    "images/class1.jpg",
+    "images/sd.jpg",
     "images/class3.jpg",
     "images/class4.jpg",
     "images/class5.jpg",
   ];
 
   const labImages = [
+    "images/lab4.png",
     "images/lab3.jpeg",
-    "images/lab5.jpg",
-    "images/lab4.jpg",
     "images/lab1.png",
     "images/lab2.png",
   ];
 
   const labCompImages = [
     "images/labComp1.png",
-    "images/labComp2.png",
     "images/labComp3.jpg",
     "images/labComp4.jpg",
   ];

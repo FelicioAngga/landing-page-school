@@ -11,9 +11,10 @@ function LandingPage() {
     <>
       <NavigationBar />
       <div className="px-4 md:px-[60px] 2xl:px-28 py-5">
-        <div className="relative">
+        <div className="relative rounded-xl overflow-hidden">
+          <div className="absolute inset-0 bg-black opacity-15"></div>
           <img
-            src="images/jumbotron.png"
+            src="images/jumbotron.jpg"
             className="rounded-xl object-cover w-full h-96 md:h-auto md:max-h-[80vh]"
           />
           <div className="absolute bottom-9 right-4 text-right text-white">
