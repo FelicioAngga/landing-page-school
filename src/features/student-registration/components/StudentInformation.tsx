@@ -209,7 +209,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
               onChange={(value) => setFormData({ ...formData, religion: value })}
             >
               <Select.Option value="Buddha">Buddha</Select.Option>
-              <Select.Option value="Kriten Protestan">
+              <Select.Option value="Kristen Protestan">
                 Kristen Protestan
               </Select.Option>
               <Select.Option value="Islam">Islam</Select.Option>
