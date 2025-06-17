@@ -62,6 +62,7 @@ function Payment({ documentData, applicant_id, studentData }: PaymentProps) {
       queryClient.invalidateQueries({
         queryKey: ["document-information"],
       });
+      queryClient.invalidateQueries({ queryKey: ["student-information"] });
     },
     onError: (error: any) => {
       showAlert({ message: error.message || "Gagal mengupload bukti pembayaran", type: "error" });

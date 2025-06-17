@@ -9,6 +9,7 @@ import { useAlert } from "../../components/AlertContext";
 import { getGuardianInformation } from "./services/guardian-information-service";
 import { DocsTypeResponse, DocumentType, getDocumentInformation, getDocumentType } from "./services/document-service";
 import { getUser } from "../login/services/login-service";
+import RegistrationComplete from "./components/RegistrationComplete";
 
 export default function () {
   const { showAlert } = useAlert();
@@ -46,14 +47,24 @@ export default function () {
     if (docPayment?.id) setIsRegistrationComplete(true);
   }, [documentData, docsType])
 
+  if (isRegistrationComplete && studentData?.state === "approved") return <RegistrationComplete />
   return (
     <div className="py-5 px-4 md:px-[60px] 2xl:py-7 2xl:px-28">
       {isRegistrationComplete && (
-        <div className="mb-5 flex gap-2 items-center">
-          <p className="text-center font-medium text-lg">Status pendaftaran saat ini:</p>
-          <div className={`font-medium text-base px-3 py-1 rounded-md text-white ${studentData?.state === "draft" ? "bg-[#FFA726]" : "bg-[#28C76F]"}`}>
-            {studentData?.state === "draft" ? "Sedang Diproses" : "Disetujui"}
+        <div className="mb-5">
+          <div className="flex gap-2 items-center">
+            <p className="text-center font-medium text-lg">Status pendaftaran saat ini:</p>
+            <div className={`font-medium text-base px-3 py-1 rounded-md text-white 
+            ${studentData?.state === "draft" ? "bg-[#FFA726]" : studentData?.state === "approved" ? "bg-[#28C76F]" : "bg-red-400"}`}>
+              {studentData?.state === "draft" ? "Sedang Diproses" : studentData?.state === "approved" ? "Disetujui" : "Ditolak"}
+            </div>
           </div>
+          {(studentData?.reason && studentData.state === "rejected") && (
+            <div>
+              <p className="text-sm text-red-500 mt-2">Alasan penolakan: {studentData.reason}</p>
+              <p className="text-sm mt-1">Perbaiki data agar data diproses kembali</p>
+            </div>
+          )}
         </div>
       )}
       <div className="flex flex-wrap gap-2 md:gap-5 justify-center md:justify-start">

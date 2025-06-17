@@ -208,13 +208,14 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
               value={formData.religion}
               onChange={(value) => setFormData({ ...formData, religion: value })}
             >
-              <Select.Option value="buddha">Buddha</Select.Option>
-              <Select.Option value="kritenProtestan">
+              <Select.Option value="Buddha">Buddha</Select.Option>
+              <Select.Option value="Kriten Protestan">
                 Kristen Protestan
               </Select.Option>
-              <Select.Option value="islam">Islam</Select.Option>
-              <Select.Option value="hindu">Hindu</Select.Option>
-              <Select.Option value="katolik">Katolik</Select.Option>
+              <Select.Option value="Islam">Islam</Select.Option>
+              <Select.Option value="Hindu">Hindu</Select.Option>
+              <Select.Option value="Katolik">Katolik</Select.Option>
+              <Select.Option value="Konghucu">Konghucu</Select.Option>
             </Select>
           </div>
 
@@ -367,11 +368,11 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
               value={formData.major}
               onChange={(value) => setFormData({ ...formData, major: value })}
             >
-              <Select.Option value="general">General</Select.Option>
+              <Select.Option value="General">General</Select.Option>
               {formData.level_id === 4 && (
                 <>
-                  <Select.Option value="mipa">MIPA</Select.Option>
-                  <Select.Option value="ips">IPS</Select.Option>
+                  <Select.Option value="MIPA">MIPA</Select.Option>
+                  <Select.Option value="IPS">IPS</Select.Option>
                 </>
               )}
             </Select>

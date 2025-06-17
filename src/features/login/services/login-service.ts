@@ -24,8 +24,6 @@ export async function loginUser({
     const { token, ...restData } = responseJson?.data;
     localStorage.setItem("accessToken", token);
     localStorage.setItem("user", JSON.stringify(restData));
-  } else if (response.status === 200 && responseJson?.data?.role_name !== "Applicant") {
-    localStorage.setItem("user-eis-fe", JSON.stringify(responseJson?.data));
   }
 
   if (response.status === 200) return responseJson;

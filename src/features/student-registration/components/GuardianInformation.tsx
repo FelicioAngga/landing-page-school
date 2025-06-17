@@ -37,6 +37,7 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
     mutationFn: (guardianData?.length || 0) > 0 ? updateGuardianInformation : saveGuardianInformation,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["guardian-information"] });
+      queryClient.invalidateQueries({ queryKey: ["student-information"] });
       if (!((guardianData?.length || 0) > 0)) setSelectedTab("Dokumen");
       window.scrollTo({ top: 0, behavior: "smooth" });
       showAlert({
@@ -160,13 +161,14 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
                   value={parents.father.religion}
                   onChange={(value) => setParents({ ...parents, father: { ...parents.father, religion: value } })}
                 >
-                  <Select.Option value="buddha">Buddha</Select.Option>
-                  <Select.Option value="kritenProtestan">
+                  <Select.Option value="Buddha">Buddha</Select.Option>
+                  <Select.Option value="Kriten Protestan">
                     Kristen Protestan
                   </Select.Option>
-                  <Select.Option value="islam">Islam</Select.Option>
-                  <Select.Option value="hindu">Hindu</Select.Option>
-                  <Select.Option value="katolik">Katolik</Select.Option>
+                  <Select.Option value="Islam">Islam</Select.Option>
+                  <Select.Option value="Hindu">Hindu</Select.Option>
+                  <Select.Option value="Katolik">Katolik</Select.Option>
+                  <Select.Option value="Konghucu">Konghucu</Select.Option>
                 </Select>
               </div>
 
@@ -266,13 +268,14 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
                   value={parents.mother.religion}
                   onChange={(value) => setParents({ ...parents, mother: { ...parents.mother, religion: value } })}
                 >
-                  <Select.Option value="buddha">Buddha</Select.Option>
-                  <Select.Option value="kritenProtestan">
+                  <Select.Option value="Buddha">Buddha</Select.Option>
+                  <Select.Option value="Kriten Protestan">
                     Kristen Protestan
                   </Select.Option>
-                  <Select.Option value="islam">Islam</Select.Option>
-                  <Select.Option value="hindu">Hindu</Select.Option>
-                  <Select.Option value="katolik">Katolik</Select.Option>
+                  <Select.Option value="Islam">Islam</Select.Option>
+                  <Select.Option value="Hindu">Hindu</Select.Option>
+                  <Select.Option value="Katolik">Katolik</Select.Option>
+                  <Select.Option value="Konghucu">Konghucu</Select.Option>
                 </Select>
               </div>
 
@@ -394,13 +397,14 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
                 onChange={(value) => setParents({ ...parents, guardian: { ...parents.guardian, religion: value } })}
                 disabled={guardianRadio !== "guardian"}
               >
-                <Select.Option value="buddha">Buddha</Select.Option>
-                <Select.Option value="kritenProtestan">
+                <Select.Option value="Buddha">Buddha</Select.Option>
+                <Select.Option value="Kriten Protestan">
                   Kristen Protestan
                 </Select.Option>
-                <Select.Option value="islam">Islam</Select.Option>
-                <Select.Option value="hindu">Hindu</Select.Option>
-                <Select.Option value="katolik">Katolik</Select.Option>
+                <Select.Option value="Islam">Islam</Select.Option>
+                <Select.Option value="Hindu">Hindu</Select.Option>
+                <Select.Option value="Katolik">Katolik</Select.Option>
+                <Select.Option value="Konghucu">Konghucu</Select.Option>
               </Select>
             </div>
 

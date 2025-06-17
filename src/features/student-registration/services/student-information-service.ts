@@ -20,6 +20,7 @@ export type StudentInformationType = {
   registration_grade: string;
   registration_major: string;
   state?: string;
+  reason?: string;
 }
 
 export async function getStudentInformation(): Promise<StudentInformationType> {
@@ -69,6 +70,7 @@ export async function updateStudentInformation(data: StudentInformationType) {
       },
       body: JSON.stringify({
         ...data,
+        state: data.state === "approved" ? "approved" : "draft",
       }),
     });
   const responseJson = await response.json();

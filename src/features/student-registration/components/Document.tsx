@@ -156,9 +156,8 @@ function Document({ documentData, applicantId, setSelectedTab, studentData }: Do
     onSuccess: () => {
       showAlert({ message: "Dokumen berhasil diupload", type: "success" });
       if (!documentData?.length) setSelectedTab("Pembayaran");
-      queryClient.invalidateQueries({
-        queryKey: ["document-information"],
-      });
+      queryClient.invalidateQueries({ queryKey: ["document-information"] });
+      queryClient.invalidateQueries({ queryKey: ["student-information"] });
     },
     onError: (error: any) => {
       showAlert({ message: error.message || "Gagal mengupload dokumen", type: "error" });

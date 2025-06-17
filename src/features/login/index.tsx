@@ -30,7 +30,7 @@ export default function () {
           type: "success",
         });
       } else {
-        window.location.href = "https://eis-letjen.web.app/";
+        window.location.href = `https://eis-letjen.web.app/login?email=${formData.email}&password=${formData.password}`;
       }
     },
     onError: (error: Error) => {
