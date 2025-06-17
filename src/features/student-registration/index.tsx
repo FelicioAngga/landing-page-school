@@ -8,15 +8,16 @@ import { getStudentInformation } from "./services/student-information-service";
 import { useAlert } from "../../components/AlertContext";
 import { getGuardianInformation } from "./services/guardian-information-service";
 import { DocsTypeResponse, DocumentType, getDocumentInformation, getDocumentType } from "./services/document-service";
-import RegistrationComplete from "./components/RegistrationComplete";
+import { getUser } from "../login/services/login-service";
 
 export default function () {
   const { showAlert } = useAlert();
   const [isRegistrationComplete, setIsRegistrationComplete] = useState(false);
   const [selectedTab, setSelectedTab] = useState("Informasi Siswa");
+  const user = getUser();
   const { data: studentData } = useQuery({
     queryFn: getStudentInformation,
-    queryKey: ["student-information"],
+    queryKey: ["student-information", user?.id],
     retryDelay: 1000 * 60 * 0.5,
   });
 
@@ -40,14 +41,21 @@ export default function () {
 
   useEffect(() => {
     if (!documentData?.length || !docsType?.length) return;
-    const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name === "pembayaran")?.id;
+    const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name.toLowerCase() === "bukti pembayaran")?.id;
     const docPayment = documentData?.find((doc: DocumentType) => doc.type_id === docPaymentTypeId);
     if (docPayment?.id) setIsRegistrationComplete(true);
   }, [documentData, docsType])
 
-  if (isRegistrationComplete) return <RegistrationComplete studentData={studentData} />;
   return (
     <div className="py-5 px-4 md:px-[60px] 2xl:py-7 2xl:px-28">
+      {isRegistrationComplete && (
+        <div className="mb-5 flex gap-2 items-center">
+          <p className="text-center font-medium text-lg">Status pendaftaran saat ini:</p>
+          <div className={`font-medium text-base px-3 py-1 rounded-md text-white ${studentData?.state === "draft" ? "bg-[#FFA726]" : "bg-[#28C76F]"}`}>
+            {studentData?.state === "draft" ? "Sedang Diproses" : "Disetujui"}
+          </div>
+        </div>
+      )}
       <div className="flex flex-wrap gap-2 md:gap-5 justify-center md:justify-start">
         <div
           className={`text-sm md:text-base font-medium md:font-bold basis-[45%] md:basis-auto ${
@@ -97,10 +105,10 @@ export default function () {
         />
       )}
       {selectedTab === "Dokumen" && (
-        <Document documentData={documentData} applicantId={studentData?.id} setSelectedTab={setSelectedTab} />
+        <Document studentData={studentData} documentData={documentData} applicantId={studentData?.id} setSelectedTab={setSelectedTab} />
       )}
       {selectedTab === "Pembayaran" && (
-        <Payment documentData={documentData} applicant_id={studentData?.id} />
+        <Payment studentData={studentData} documentData={documentData} applicant_id={studentData?.id} />
       )}
     </div>
   );

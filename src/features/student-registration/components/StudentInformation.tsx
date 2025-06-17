@@ -29,6 +29,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
     address: "",
     level_id: null,
     major: null,
+    nisn: "",
     identity_no: "",
   });
 
@@ -67,6 +68,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
       id: studentData?.id,
       full_name: formData.name || "",
       identity_no: formData?.identity_no || "",
+      nisn: formData?.nisn || "",
       place_of_birth: formData.placeOfBirth,
       date_of_birth: dayjs(formData.dateOfBirth as any).format("YYYY-MM-DD"),
       address: formData.address,
@@ -83,11 +85,11 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
     });
   }
 
-  function isAllFieldsFilled() {
-    return Object.values(formData).every((value) => {
-      if (typeof value === "string") {
-        return value.trim() !== "";
-      }
+  function isAllFieldsFilled(exceptions: string[] = ["identity_no", "nisn"]) {
+    return Object.entries(formData).every(([key, value]) => {
+      if (key === "nisn" && formData.level_id !== 1 && !value) return false;
+      if (exceptions.includes(key)) return true;
+      if (typeof value === "string") return value.trim() !== "";
       return value !== null && value !== undefined;
     });
   }
@@ -97,6 +99,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
     setFormData({
       name: studentData.full_name || "",
       identity_no: studentData.identity_no || "",
+      nisn: studentData.nisn || "",
       placeOfBirth: studentData.place_of_birth || "",
       dateOfBirth: studentData.date_of_birth ? dayjs(studentData.date_of_birth) : null as any,
       religion: studentData.religion || null as any,
@@ -137,7 +140,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           </div>
           <div>
             <p className="text-sm mb-1 font-medium">
-              NIK <span className="text-red-500">*</span>
+              NIK
             </p>
             <Input
               type="number"
@@ -149,7 +152,20 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
               }
             />
           </div>
-
+          <div>
+            <p className="text-sm mb-1 font-medium">
+              NISN {formData.level_id !== 1 && <span className="text-red-500">*</span>}
+            </p>
+            <Input
+              type="number"
+              placeholder="NISN"
+              className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+              value={formData.nisn}
+              onChange={(e) =>
+                setFormData({ ...formData, nisn: e.target.value })
+              }
+            />
+          </div>
           <div className="flex gap-6">
             <div className="w-full">
               <p className="text-sm mb-1 font-medium">
@@ -173,6 +189,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
                 placeholder="Tanggal Lahir"
                 allowClear={false}
                 value={formData.dateOfBirth ? dayjs(formData.dateOfBirth) : null}
+                maxDate={dayjs(new Date())}
                 onChange={(date) => {
                     setFormData({ ...formData, dateOfBirth: dayjs(date).format("YYYY-MM-DD") as any })
                   }
@@ -329,7 +346,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
               className="w-full h-10 text-sm rounded-md border border-gray-400 placeholder:text-[#A5A5A5]"
               value={formData.level_id}
               onChange={(value) =>
-                setFormData({ ...formData, level_id: value })
+                setFormData({ ...formData, major: null, level_id: value })
               }
             >
               {gradeData?.map((grade: any) => (
@@ -351,8 +368,12 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
               onChange={(value) => setFormData({ ...formData, major: value })}
             >
               <Select.Option value="general">General</Select.Option>
-              <Select.Option value="mipa">MIPA</Select.Option>
-              <Select.Option value="ips">IPS</Select.Option>
+              {formData.level_id === 4 && (
+                <>
+                  <Select.Option value="mipa">MIPA</Select.Option>
+                  <Select.Option value="ips">IPS</Select.Option>
+                </>
+              )}
             </Select>
           </div>
         </div>

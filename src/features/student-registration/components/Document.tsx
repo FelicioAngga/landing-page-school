@@ -7,14 +7,16 @@ import { useAlert } from "../../../components/AlertContext";
 import { fileToBase64 } from "../../../utils/base64";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createDocument, DocsTypeResponse, DocumentType, getDocumentType, updateDocument } from "../services/document-service";
+import { StudentInformationType } from "../services/student-information-service";
 
 type DocumentProps = {
   setSelectedTab: (tab: string) => void;
   applicantId?: number;
   documentData?: DocumentType[];
+  studentData?: StudentInformationType;
 };
 
-function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) {
+function Document({ documentData, applicantId, setSelectedTab, studentData }: DocumentProps) {
   const { Dragger } = Upload;
   const queryClient = useQueryClient();
   const { showAlert } = useAlert();
@@ -45,10 +47,18 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
     file: null,
   });
 
+  const [educationCertificateInfo, setEducationCertificateInfo] = useState({
+    id: 0,
+    preview: "",
+    name: "",
+    file: null,
+  });
+
   const [docsTypeInfo, setDocsTypeInfo] = useState({
     familyCardId: 0,
     birthCertificateId: 0,
     guardianId: 0,
+    educationCertificateId: 0,
   });
   
   const propsFamilyCard: UploadProps = {
@@ -105,6 +115,27 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
         }
         const previewUrl = URL.createObjectURL(file);
         setGuardianIdInfo(prev => ({
+          ...prev,
+          preview: previewUrl,
+          name: info.file.name,
+          file: file as any,
+        }));
+      }
+    }
+  };
+  
+  const propsEducationCertificate: UploadProps = {
+    name: 'file',
+    multiple: false,
+    onChange(info) {
+      const file = info.file.originFileObj;
+      if (file) {
+        if (file?.size > 1024 * 1024) {
+          showAlert({ message: "File size exceeds 1MB", type: "error" });
+          return;
+        }
+        const previewUrl = URL.createObjectURL(file);
+        setEducationCertificateInfo(prev => ({
           ...prev,
           preview: previewUrl,
           name: info.file.name,
@@ -170,8 +201,20 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
         name: guardianIdInfo.name
       });
     }
+    if (educationCertificateInfo.file) {
+      const base64 = await fileToBase64(educationCertificateInfo.file);
+      documentsToUpload.push({
+        id: educationCertificateInfo.id,
+        type_id: docsTypeInfo.educationCertificateId,
+        applicant_id: applicantId,
+        uploaded_file: base64,
+        description: educationCertificateInfo.name,
+        name: educationCertificateInfo.name
+      });
+    }
 
     if (documentsToUpload.length > 0) await mutateAsync(documentsToUpload);
+    else if ((documentData?.length || 0) > 0) setSelectedTab("Pembayaran");
   }
 
   useEffect(() => {
@@ -181,8 +224,9 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
 
     const typeInfo = {
       familyCardId: getTypeId("kartu keluarga"),
-      birthCertificateId: getTypeId("akte lahir"),
-      guardianId: getTypeId("ktp wali"),
+      birthCertificateId: getTypeId("akta kelahiran"),
+      guardianId: getTypeId("ktp orang tua"),
+      educationCertificateId: getTypeId("ijazah"),
     };
     setDocsTypeInfo(typeInfo);
 
@@ -190,6 +234,7 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
     const familyCard = documentData.find((doc) => doc.type_id === typeInfo.familyCardId);
     const birthCertificate = documentData.find((doc) => doc.type_id === typeInfo.birthCertificateId);
     const guardianId = documentData.find((doc) => doc.type_id === typeInfo.guardianId);
+    const educationCertificate = documentData.find((doc) => doc.type_id === typeInfo.educationCertificateId);
 
     if (familyCard) {
       setFamilyCardInfo({
@@ -215,6 +260,14 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
         file: null,
       });
     }
+    if (educationCertificate) {
+      setEducationCertificateInfo({
+        id: educationCertificate.id || 0,
+        preview: educationCertificate.uploaded_file,
+        name: educationCertificate.description,
+        file: null,
+      });
+    }
   }, [documentData, docsType]);
 
   useEffect(() => {
@@ -222,8 +275,9 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
       if (familyCardInfo.preview) URL.revokeObjectURL(familyCardInfo.preview);
       if (birthCertificateInfo.preview) URL.revokeObjectURL(birthCertificateInfo.preview);
       if (guardianIdInfo.preview) URL.revokeObjectURL(guardianIdInfo.preview);
+      if (educationCertificateInfo.preview) URL.revokeObjectURL(educationCertificateInfo.preview);
     };
-}, [familyCardInfo, birthCertificateInfo, guardianIdInfo]);
+}, [familyCardInfo, birthCertificateInfo, guardianIdInfo, educationCertificateInfo]);
 
   return (
     <div className="mt-5 md:mt-12">
@@ -251,7 +305,7 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
         </div>
 
         <div className="border p-4 rounded md:border-none md:p-0">
-          <p className="font-medium mb-3">Akte Lahir <span className="text-red-500">*</span></p>
+          <p className="font-medium mb-3">Akta Kelahiran <span className="text-red-500">*</span></p>
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-28">
             <div className="w-[320px]">
               <Dragger {...propsBirthCertificate} accept="image/*" className="block h-[220px]" showUploadList={false} multiple={false} customRequest={() => {}}>
@@ -291,9 +345,36 @@ function Document({ documentData, applicantId, setSelectedTab }: DocumentProps) 
             )}
           </div>
         </div>
+        
+        <div className="border p-4 rounded md:border-none md:p-0">
+          <p className="font-medium mb-3">Ijazah Terakhir {studentData?.level?.name !== "TK" && <span className="text-red-500">*</span>}</p>
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-28">
+            <div className="w-[320px]">
+              <Dragger {...propsEducationCertificate} accept="image/*" className="block h-[220px]" showUploadList={false} multiple={false} customRequest={() => {}}>
+                <IoMdDocument size={48} className="text-gray-500 mx-auto" />
+                <p className="mt-4 font-medium">Click to upload or drag your file here</p>
+                <p className="font-medium text-sm">
+                  Max files size 1MB
+                </p>
+              </Dragger>
+            </div>
+            {educationCertificateInfo.preview && (
+              <div className="relative">
+                <img className="size-[200px] object-cover rounded-lg" src={educationCertificateInfo.preview} />
+                <p className="text-sm mt-1">{educationCertificateInfo.name}</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
       <Button 
-        disabled={!familyCardInfo.preview || !birthCertificateInfo.preview || !guardianIdInfo.preview || isPending}
+        disabled={
+          !familyCardInfo.preview ||
+          !birthCertificateInfo.preview ||
+          !guardianIdInfo.preview ||
+          (!educationCertificateInfo.preview && studentData?.level?.name !== "TK") ||
+          isPending
+        }
         className="max-w-md flex justify-center mx-auto font-bold w-full mt-5" 
         onClick={handleNext}
       >

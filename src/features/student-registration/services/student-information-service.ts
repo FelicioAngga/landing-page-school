@@ -2,6 +2,7 @@ import { getAccessToken } from "../../../utils/getAccessToken";
 
 export type StudentInformationType = {
   id?: number;
+  nisn: string;
   identity_no: string;
   full_name: string;
   place_of_birth: string;
@@ -15,6 +16,7 @@ export type StudentInformationType = {
   child_status: string;
   school_origin: string;
   level_id: number;
+  level?: { name: string; }
   registration_grade: string;
   registration_major: string;
   state?: string;

@@ -22,12 +22,15 @@ export default function () {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      if (data) {
+      const isApplicant = data?.data?.role_name === "Applicant";
+      if (isApplicant) {
         navigate("/student-registration");
         showAlert({
           message: "Login berhasil!",
           type: "success",
         });
+      } else {
+        window.location.href = "https://eis-letjen.web.app/";
       }
     },
     onError: (error: Error) => {

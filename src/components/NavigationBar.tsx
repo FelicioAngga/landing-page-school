@@ -1,8 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { Popover } from "antd";
+import { getUser } from "../features/login/services/login-service";
 
 function NavigationBar() {
+  
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<any>();
@@ -36,25 +39,50 @@ function NavigationBar() {
         Letjen Haryono M.T.
       </div>
 
-      <div className="gap-9 hidden md:flex">
+      <div className="gap-6 hidden md:flex items-center">
         <div
           onClick={() => navigate("/news")}
-          className="text-lg 2xl:text-xl font-medium cursor-pointer"
+          className="text-base lg:text-lg 2xl:text-xl font-medium cursor-pointer"
         >
           Berita
         </div>
         <div
           onClick={() => navigate("/student-registration")}
-          className="text-lg 2xl:text-xl font-medium cursor-pointer"
+          className="text-base lg:text-lg 2xl:text-xl font-medium cursor-pointer"
         >
           Pendaftaran Siswa
         </div>
         <div
           onClick={() => navigate("/gallery")}
-          className="text-lg 2xl:text-xl font-medium cursor-pointer"
+          className="text-base lg:text-lg 2xl:text-xl font-medium cursor-pointer"
         >
           Galeri Sekolah
         </div>
+        {getUser()?.name ? (
+          <Popover
+            content={
+              <div>
+                <div
+                  onClick={() => {
+                    localStorage.removeItem("accessToken");
+                    localStorage.removeItem("user");
+                    navigate("/login");
+                  }}
+                  className="lg:text-lg 2xl:text-xl font-medium cursor-pointer text-red-500"
+                >Logout</div>
+              </div>
+            }
+          >
+            <div className="flex items-center gap-2 lg:text-lg 2xl:text-xl cursor-pointer">
+              <img className="size-6 lg:size-8 rounded-full" src="images/default-user.jpeg" />
+              <p>{getUser()?.name}</p>
+            </div>  
+          </Popover>
+        ) : (
+          <div className="px-5 py-1.5 rounded cursor-pointer text-white bg-[#1469C2]" onClick={() => navigate("/login")}>
+            Login
+          </div>
+        )}
       </div>
 
       <button onClick={() => setIsOpen(true)} className="md:hidden text-2xl">
@@ -94,6 +122,16 @@ function NavigationBar() {
             className="text-lg font-medium cursor-pointer"
           >
             Galeri Sekolah
+          </div>
+          <div
+            onClick={() => {
+              localStorage.removeItem("accessToken");
+              localStorage.removeItem("user");
+              navigate("/login");
+            }}
+            className="text-lg 2xl:text-xl font-medium cursor-pointer text-red-500"
+          >
+            Logout
           </div>
         </div>
       </div>

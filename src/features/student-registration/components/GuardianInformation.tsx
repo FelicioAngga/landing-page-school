@@ -1,4 +1,4 @@
-import { DatePicker, Input, Select } from 'antd';
+import { DatePicker, Input, Radio, Select } from 'antd';
 import Button from '../../../components/Button';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
@@ -26,6 +26,7 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
     phone: ""
   }
   type ParentType = 'father' | 'mother' | 'guardian';
+  const [guardianRadio, setGuardianRadio] = useState<"father" | "mother" | "guardian">("guardian");
   const [parents, setParents] = useState<Record<ParentType, typeof emptyParent>>({
     father: { ...emptyParent },
     mother: { ...emptyParent },
@@ -104,9 +105,10 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
     setParents(updated);
   }, [guardianData]);
 
-  function isAllFieldsFilled() {
+  function isAllFieldsFilled(exceptions: string[] = ["job"]) {
     return Object.values(parents).every((parent) => {
-      return Object.values(parent).every((value) => {
+      return Object.entries(parent).every(([key, value]) => {
+        if (exceptions.includes(key)) return true;
         if (typeof value === "string") {
           return value.trim() !== "";
         }
@@ -114,6 +116,20 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
       });
     });
   }
+
+  useEffect(() => {
+    if (guardianRadio === "father") {
+      setParents((prev) => ({
+        ...prev,
+        guardian: { ...prev.father },
+      }));
+    } else if (guardianRadio === "mother") {
+      setParents((prev) => ({
+        ...prev,
+        guardian: { ...prev.mother },
+      }));
+    }
+  }, [parents.father, parents.mother])
 
   return (
     <div className="mt-5 md:mt-12">
@@ -167,6 +183,7 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
                 <div className="w-full">
                   <p className="text-sm mb-1 font-medium">Tanggal Lahir <span className="text-red-500">*</span></p>
                   <DatePicker 
+                    maxDate={dayjs(new Date())}
                     className="w-full py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]" 
                     value={parents.father.date_of_birth ? dayjs(parents.father.date_of_birth) : null}
                     onChange={(date) => setParents({ ...parents, father: { ...parents.father, date_of_birth: dayjs(date).format("YYYY-MM-DD") as any } })}
@@ -176,12 +193,23 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
 
               <div>
                 <p className="text-sm mb-1 font-medium">Pendidikan Tertinggi <span className="text-red-500">*</span></p>
-                <Input
-                  placeholder="Pendidikan Tertinggi"
-                  className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
-                  value={parents.father.highest_education}
-                  onChange={(e) => setParents({ ...parents, father: { ...parents.father, highest_education: e.target.value } })}
-                />
+                <Select
+                  className="w-full h-10 text-sm rounded-md border border-gray-400 placeholder:text-[#A5A5A5]"
+                  placeholder="Pilih Pendidikan Tertinggi"
+                  value={parents.father.highest_education || null}
+                  onChange={(value) =>
+                    setParents({ ...parents, father: { ...parents.father, highest_education: value } })
+                  }
+                >
+                  <Select.Option value="Tidak Sekolah">Tidak Sekolah</Select.Option>
+                  <Select.Option value="TK">TK</Select.Option>
+                  <Select.Option value="SD">SD</Select.Option>
+                  <Select.Option value="SMP">SMP</Select.Option>
+                  <Select.Option value="SMA">SMA</Select.Option>
+                  <Select.Option value="S1">S1</Select.Option>
+                  <Select.Option value="S2">S2</Select.Option>
+                  <Select.Option value="S3">S3</Select.Option>
+                </Select>
               </div>
 
               <div>
@@ -195,7 +223,7 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
               </div>
 
               <div>
-                <p className="text-sm mb-1 font-medium">Pekerjaan <span className="text-red-500">*</span></p>
+                <p className="text-sm mb-1 font-medium">Pekerjaan</p>
                 <Input
                   placeholder="Pekerjaan"
                   className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
@@ -261,6 +289,7 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
                 <div className="w-full">
                   <p className="text-sm mb-1 font-medium">Tanggal Lahir <span className="text-red-500">*</span></p>
                   <DatePicker 
+                    maxDate={dayjs(new Date())}
                     className="w-full py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]" 
                     value={parents.mother.date_of_birth ? dayjs(parents.mother.date_of_birth) : null}
                     onChange={(date) => setParents({ ...parents, mother: { ...parents.mother, date_of_birth: dayjs(date).format("YYYY-MM-DD") as any } })}
@@ -270,12 +299,23 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
 
               <div>
                 <p className="text-sm mb-1 font-medium">Pendidikan Tertinggi <span className="text-red-500">*</span></p>
-                <Input
-                  placeholder="Pendidikan Tertinggi"
-                  className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
-                  value={parents.mother.highest_education}
-                  onChange={(e) => setParents({ ...parents, mother: { ...parents.mother, highest_education: e.target.value } })}
-                />
+                <Select
+                  className="w-full h-10 text-sm rounded-md border border-gray-400 placeholder:text-[#A5A5A5]"
+                  placeholder="Pilih Pendidikan Tertinggi"
+                  value={parents.mother.highest_education || null}
+                  onChange={(value) =>
+                    setParents({ ...parents, mother: { ...parents.mother, highest_education: value } })
+                  }
+                >
+                  <Select.Option value="Tidak Sekolah">Tidak Sekolah</Select.Option>
+                  <Select.Option value="TK">TK</Select.Option>
+                  <Select.Option value="SD">SD</Select.Option>
+                  <Select.Option value="SMP">SMP</Select.Option>
+                  <Select.Option value="SMA">SMA</Select.Option>
+                  <Select.Option value="S1">S1</Select.Option>
+                  <Select.Option value="S2">S2</Select.Option>
+                  <Select.Option value="S3">S3</Select.Option>
+                </Select>
               </div>
 
               <div>
@@ -289,7 +329,7 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
               </div>
 
               <div>
-                <p className="text-sm mb-1 font-medium">Pekerjaan <span className="text-red-500">*</span></p>
+                <p className="text-sm mb-1 font-medium">Pekerjaan</p>
                 <Input
                   placeholder="Pekerjaan"
                   className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
@@ -314,14 +354,34 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
 
         <div className='mt-8 mx-auto w-fit lg:mx-0'>
           <p className="2xl:text-lg font-bold">Data Wali Siswa</p>
+          <Radio.Group
+            className="mt-2"
+            options={[
+              { label: "Samakan dengan Ayah", value: "father" },
+              { label: "Samakan dengan Ibu", value: "mother" },
+              { label: "Isi Data Wali", value: "guardian" },
+            ]}
+            value={guardianRadio}
+            onChange={(e) => {
+              setGuardianRadio(e.target.value as "father" | "mother" | "guardian");
+              if (e.target.value === "father") {
+                setParents({ ...parents, guardian: { ...parents.father } });
+              } else if (e.target.value === "mother") {
+                setParents({ ...parents, guardian: { ...parents.mother } });
+              } else {
+                setParents({ ...parents, guardian: { ...emptyParent } });
+              }
+            }}
+          />
           <div className="mt-3 flex flex-col gap-4 md:w-[400px] lg:w-[420px] xl:w-[500px] 2xl:w-[600px] px-6 py-4 border rounded-lg">
             <div>
               <p className="text-sm mb-1 font-medium">Nama Wali <span className="text-red-500">*</span></p>
               <Input
-                placeholder="Nama Ayah"
+                placeholder="Nama Wali"
                 className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
                 value={parents.guardian.name}
                 onChange={(e) => setParents({ ...parents, guardian: { ...parents.guardian, name: e.target.value } })}
+                disabled={guardianRadio !== "guardian"}
               />
             </div>
 
@@ -332,6 +392,7 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
                 className="w-full h-10 text-sm rounded-md border border-gray-400 placeholder:text-[#A5A5A5]"
                 value={parents.guardian.religion}
                 onChange={(value) => setParents({ ...parents, guardian: { ...parents.guardian, religion: value } })}
+                disabled={guardianRadio !== "guardian"}
               >
                 <Select.Option value="buddha">Buddha</Select.Option>
                 <Select.Option value="kritenProtestan">
@@ -351,26 +412,41 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
                   className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
                   value={parents.guardian.place_of_birth}
                   onChange={(e) => setParents({ ...parents, guardian: { ...parents.guardian, place_of_birth: e.target.value } })}
+                  disabled={guardianRadio !== "guardian"}
                 />
               </div>
               <div className="w-full">
                 <p className="text-sm mb-1 font-medium">Tanggal Lahir <span className="text-red-500">*</span></p>
                 <DatePicker 
+                  maxDate={dayjs(new Date())}
                   className="w-full py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]" 
                   value={parents.guardian.date_of_birth ? dayjs(parents.guardian.date_of_birth) : null}
                   onChange={(date) => setParents({ ...parents, guardian: { ...parents.guardian, date_of_birth: dayjs(date).format("YYYY-MM-DD") as any } })}
+                  disabled={guardianRadio !== "guardian"}
                 />
               </div>
             </div>
 
             <div>
               <p className="text-sm mb-1 font-medium">Pendidikan Tertinggi <span className="text-red-500">*</span></p>
-              <Input
-                placeholder="Pendidikan Tertinggi"
-                className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
-                value={parents.guardian.highest_education}
-                onChange={(e) => setParents({ ...parents, guardian: { ...parents.guardian, highest_education: e.target.value } })}
-              />
+              <Select
+                className="w-full h-10 text-sm rounded-md border border-gray-400 placeholder:text-[#A5A5A5]"
+                placeholder="Pilih Pendidikan Tertinggi"
+                value={parents.guardian.highest_education || null}
+                onChange={(value) =>
+                  setParents({ ...parents, guardian: { ...parents.guardian, highest_education: value } })
+                }
+                disabled={guardianRadio !== "guardian"}
+              >
+                <Select.Option value="Tidak Sekolah">Tidak Sekolah</Select.Option>
+                <Select.Option value="TK">TK</Select.Option>
+                <Select.Option value="SD">SD</Select.Option>
+                <Select.Option value="SMP">SMP</Select.Option>
+                <Select.Option value="SMA">SMA</Select.Option>
+                <Select.Option value="S1">S1</Select.Option>
+                <Select.Option value="S2">S2</Select.Option>
+                <Select.Option value="S3">S3</Select.Option>
+              </Select>
             </div>
 
             <div>
@@ -380,16 +456,18 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
                 className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
                 value={parents.guardian.address}
                 onChange={(e) => setParents({ ...parents, guardian: { ...parents.guardian, address: e.target.value } })}
+                disabled={guardianRadio !== "guardian"}
               />
             </div>
 
             <div>
-              <p className="text-sm mb-1 font-medium">Pekerjaan <span className="text-red-500">*</span></p>
+              <p className="text-sm mb-1 font-medium">Pekerjaan</p>
               <Input
                 placeholder="Pekerjaan"
                 className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
                 value={parents.guardian.job}
                 onChange={(e) => setParents({ ...parents, guardian: { ...parents.guardian, job: e.target.value } })}
+                disabled={guardianRadio !== "guardian"}
               />
             </div>
 
@@ -401,6 +479,7 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
                 className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
                 value={parents.guardian.phone}
                 onChange={(e) => setParents({ ...parents, guardian: { ...parents.guardian, phone: e.target.value } })}
+                disabled={guardianRadio !== "guardian"}
               />
             </div>
           </div>

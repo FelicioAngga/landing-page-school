@@ -7,16 +7,19 @@ import { useAlert } from '../../../components/AlertContext';
 import { createDocument, DocsTypeResponse, DocumentType, getDocumentType, updateDocument } from '../services/document-service';
 import { useEffect, useState } from 'react';
 import { fileToBase64 } from '../../../utils/base64';
+import { StudentInformationType } from '../services/student-information-service';
 
 type PaymentProps = {
   applicant_id: number | undefined;
   documentData?: DocumentType[];
+  studentData?: StudentInformationType;
 };
 
-function Payment({ documentData, applicant_id }: PaymentProps) {
+function Payment({ documentData, applicant_id, studentData }: PaymentProps) {
   const { Dragger } = Upload;
   const queryClient = useQueryClient();
   const { showAlert } = useAlert();
+
   const { data: docsType } = useQuery({
     queryFn: () => getDocumentType(),
     queryKey: ["document-type"],
@@ -53,7 +56,7 @@ function Payment({ documentData, applicant_id }: PaymentProps) {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: documentData?.find(doc => doc.type_id === 
-      docsType?.find((docType: any) => docType.name.toLowerCase() === "pembayaran")?.id) ? updateDocument : createDocument,
+      docsType?.find((docType: any) => docType.name.toLowerCase() === "bukti pembayaran")?.id) ? updateDocument : createDocument,
     onSuccess: () => {
       showAlert({ message: "Bukti pembayaran berhasil diupload", type: "success" });
       queryClient.invalidateQueries({
@@ -68,7 +71,7 @@ function Payment({ documentData, applicant_id }: PaymentProps) {
   async function handleNext() {
     if (!paymentInfo.file || !applicant_id) return;
     const base64 = await fileToBase64(paymentInfo.file);
-    const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name.toLowerCase() === "pembayaran")?.id;
+    const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name.toLowerCase() === "bukti pembayaran")?.id;
     const docPayment = documentData?.find((doc: DocumentType) => doc.type_id === docPaymentTypeId);
     mutateAsync({
       id: docPayment?.id,
@@ -82,7 +85,7 @@ function Payment({ documentData, applicant_id }: PaymentProps) {
 
   useEffect(() => {
     if (!documentData?.length || !docsType) return;
-    const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name.toLowerCase() === "pembayaran")?.id;
+    const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name.toLowerCase() === "bukti pembayaran")?.id;
     const docPayment = documentData?.find((doc: DocumentType) => doc.type_id === docPaymentTypeId);
     setPaymentInfo({
       id: docPayment?.id || 0,
@@ -102,47 +105,60 @@ function Payment({ documentData, applicant_id }: PaymentProps) {
       <div className="my-8">
         <table className="font-medium text-[13px] md:text-base">
           <tbody>
-
             <tr className="border border-gray-400 sm:border-none">
               <td>Uang Pembangunan</td>
               <td className="py-1 px-0.5 md:px-4">:</td>
               <td className="whitespace-nowrap">Rp. {(2000000).toLocaleString()}</td>
             </tr>
-            <tr className="border border-gray-400 sm:border-none">
-              <td>Uang Sekolah TK A/B</td>
-              <td className="py-1 px-0.5 md:px-4">:</td>
-              <td className="whitespace-nowrap">Rp. {(305000).toLocaleString()}</td>
-            </tr>
-            <tr className="border border-gray-400 sm:border-none">
-              <td>Uang Sekolah SD Kelas I Sampai Kelas V</td>
-              <td className="py-1 px-0.5 md:px-4">:</td>
-              <td className="whitespace-nowrap">Rp. {(285000).toLocaleString()}</td>
-            </tr>
-            <tr className="border border-gray-400 sm:border-none">
-              <td>Uang Sekolah SD Kelas VI</td>
-              <td className="py-1 px-0.5 md:px-4">:</td>
-              <td className="whitespace-nowrap">Rp. {(295000).toLocaleString()}</td>
-            </tr>
-            <tr className="border border-gray-400 sm:border-none">
-              <td>Uang Sekolah SMP Kelas I Sampai Kelas II</td>
-              <td className="py-1 px-0.5 md:px-4">:</td>
-              <td className="whitespace-nowrap">Rp. {(335000).toLocaleString()}</td>
-            </tr>
-            <tr className="border border-gray-400 sm:border-none">
-              <td>Uang Sekolah SMP Kelas III</td>
-              <td className="py-1 px-0.5 md:px-4">:</td>
-              <td className="whitespace-nowrap">Rp. {(345000).toLocaleString()}</td>
-            </tr>
-            <tr className="border border-gray-400 sm:border-none">
-              <td>Uang Sekolah SMA Kelas I Sampai Kelas II</td>
-              <td className="py-1 px-0.5 md:px-4">:</td>
-              <td className="whitespace-nowrap">Rp. {(345000).toLocaleString()}</td>
-            </tr>
-            <tr className="border border-gray-400 sm:border-none">
-              <td>Uang Sekolah SMA Kelas III</td>
-              <td className="py-1 px-0.5 md:px-4">:</td>
-              <td className="whitespace-nowrap">Rp. {(355000).toLocaleString()}</td>
-            </tr>
+            {studentData?.level?.name === "TK" && (
+              <tr className="border border-gray-400 sm:border-none">
+                <td>Uang Sekolah TK A/B</td>
+                <td className="py-1 px-0.5 md:px-4">:</td>
+                <td className="whitespace-nowrap">Rp. {(305000).toLocaleString()}</td>
+              </tr>
+            )}
+            {studentData?.level?.name === "SD" && (
+              <>
+                <tr className="border border-gray-400 sm:border-none">
+                  <td>Uang Sekolah SD Kelas I Sampai Kelas V</td>
+                  <td className="py-1 px-0.5 md:px-4">:</td>
+                  <td className="whitespace-nowrap">Rp. {(285000).toLocaleString()}</td>
+                </tr>
+                <tr className="border border-gray-400 sm:border-none">
+                  <td>Uang Sekolah SD Kelas VI</td>
+                  <td className="py-1 px-0.5 md:px-4">:</td>
+                  <td className="whitespace-nowrap">Rp. {(295000).toLocaleString()}</td>
+                </tr>
+              </>
+            )}
+            {studentData?.level?.name === "SMP" && (
+              <>
+                <tr className="border border-gray-400 sm:border-none">
+                  <td>Uang Sekolah SMP Kelas I Sampai Kelas II</td>
+                  <td className="py-1 px-0.5 md:px-4">:</td>
+                  <td className="whitespace-nowrap">Rp. {(335000).toLocaleString()}</td>
+                </tr>
+                <tr className="border border-gray-400 sm:border-none">
+                  <td>Uang Sekolah SMP Kelas III</td>
+                  <td className="py-1 px-0.5 md:px-4">:</td>
+                  <td className="whitespace-nowrap">Rp. {(345000).toLocaleString()}</td>
+                </tr>
+              </>
+            )}
+            {studentData?.level?.name === "SMA" && (
+              <>
+                <tr className="border border-gray-400 sm:border-none">
+                  <td>Uang Sekolah SMA Kelas I Sampai Kelas II</td>
+                  <td className="py-1 px-0.5 md:px-4">:</td>
+                  <td className="whitespace-nowrap">Rp. {(345000).toLocaleString()}</td>
+                </tr>
+                <tr className="border border-gray-400 sm:border-none">
+                  <td>Uang Sekolah SMA Kelas III</td>
+                  <td className="py-1 px-0.5 md:px-4">:</td>
+                  <td className="whitespace-nowrap">Rp. {(355000).toLocaleString()}</td>
+                </tr>
+              </>
+            )}
           </tbody>
         </table>
       </div>

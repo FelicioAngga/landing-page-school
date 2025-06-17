@@ -20,12 +20,20 @@ export async function loginUser({
       }),
     });
   const responseJson = await response.json();
-  if (typeof window !== 'undefined'){
-    const { token, ...restData } = responseJson.data;
+  if (response.status === 200 && responseJson?.data?.role_name === "Applicant") {
+    const { token, ...restData } = responseJson?.data;
     localStorage.setItem("accessToken", token);
     localStorage.setItem("user", JSON.stringify(restData));
+  } else if (response.status === 200 && responseJson?.data?.role_name !== "Applicant") {
+    localStorage.setItem("user-eis-fe", JSON.stringify(responseJson?.data));
   }
 
   if (response.status === 200) return responseJson;
   else throw new Error(responseJson.error);
+}
+
+export function getUser() {
+  const user = localStorage.getItem("user");
+  if (!user) return null;
+  return JSON.parse(user);
 }
