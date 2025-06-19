@@ -1,23 +1,6 @@
 function SchoolLevel() {
   return (
     <div className="mt-16 flex flex-col gap-16 md:gap-24">
-      <div className="flex flex-col-reverse md:flex-row gap-3 md:gap-10 justify-between">
-        <div>
-          <p className="text-2xl md:text-3xl font-bold">Playgroup</p>
-          <p className="mt-1 md:mt-4 2xl:mt-6 text-[#637587] text-justify 2xl:text-xl max-w-[80vw]">
-            Jenjang pendidikan prasekolah yang ditujukan untuk anak usia 2–4
-            tahun. Tujuannya adalah untuk mengenalkan anak pada lingkungan
-            belajar yang menyenangkan melalui permainan, interaksi sosial, dan
-            kegiatan kreatif. Playgroup membantu perkembangan motorik, kognitif,
-            serta sosial-emosional anak sebelum memasuki Taman Kanak-Kanak (TK).
-          </p>
-        </div>
-        <img
-          src="/images/pg.jpg"
-          className="object-cover rounded-xl shrink-0 w-[480px] max-h-[275px] 2xl:h-[360px]"
-        />
-      </div>
-
       <div className="flex flex-col md:flex-row gap-3 md:gap-10 justify-between">
         <img
           src="/images/tk.jpg"
