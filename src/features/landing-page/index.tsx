@@ -18,7 +18,7 @@ function LandingPage() {
             className="rounded-xl object-cover w-full h-96 md:h-auto md:max-h-[80vh]"
           />
           <div className="absolute bottom-9 right-4 text-right text-white">
-            <p className="text-2xl md:text-5xl font-black">Letjend Haryono M.T.</p>
+            <p className="text-2xl md:text-5xl font-black">Letjen Haryono M.T.</p>
             <p className="mt-3 text-sm md:text-base">
               Temukan minat Anda. Temukan orang-orang Anda.
               <br />
