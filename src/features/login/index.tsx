@@ -12,7 +12,7 @@ import useEncryption from "../../utils/useEncryption";
 export default function () {
   const navigate = useNavigate();
   const { showAlert } = useAlert();
-  const { encrypt, decrypt } = useEncryption();
+  const { encrypt } = useEncryption();
 
   const [ready, setReady] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
