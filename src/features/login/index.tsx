@@ -7,10 +7,13 @@ import { useMutation } from "@tanstack/react-query";
 import { useAlert } from "../../components/AlertContext";
 import { loginUser } from "./services/login-service";
 import { isAuthenticated } from "../../utils/getAccessToken";
+import useEncryption from "../../utils/useEncryption";
 
 export default function () {
   const navigate = useNavigate();
   const { showAlert } = useAlert();
+  const { encrypt, decrypt } = useEncryption();
+
   const [ready, setReady] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -30,7 +33,8 @@ export default function () {
           type: "success",
         });
       } else {
-        window.location.href = `https://eis-letjen.web.app/login?email=${formData.email}&password=${formData.password}`;
+        const encryptedData = encrypt("email=" + formData.email + "&password=" + formData.password)
+        window.location.href = `https://eis-letjen.web.app/login?data=${encodeURIComponent(encryptedData)}`;
       }
     },
     onError: (error: Error) => {
