@@ -1,5 +1,4 @@
 import NavigationBar from "../../components/NavigationBar";
-import Footer from "./components/Footer";
 import LatestNews from "./components/LatestNews";
 import SchoolNumberInfo from "./components/SchoolNumberInfo";
 import { NextArrow, PrevArrow } from "../gallery/SliderArrow";
@@ -8,6 +7,8 @@ import useScrollPosition from "../../utils/useScrollPosition";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import SchoolActivity from "./components/SchoolActivity";
+import Footer from "../news/components/Footer";
+import SchoolMap from "./components/SchoolMap";
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -96,6 +97,7 @@ function LandingPage() {
         </div>
         <SchoolActivity />
         <div className="px-4 md:px-[60px] 2xl:px-28">
+          <SchoolMap />
           <LatestNews />
         </div>
       </div>

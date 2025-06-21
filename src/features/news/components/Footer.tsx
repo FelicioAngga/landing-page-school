@@ -1,36 +1,76 @@
-import { FaCity, FaPhone } from "react-icons/fa6"
-import { IoMdMail } from "react-icons/io"
+import { FaFacebook, FaInstagram, FaLinkedin, FaPhone } from "react-icons/fa6"
 import Button from "../../../components/Button"
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { IoMail } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 
 function Footer() {
+  const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
+
   return (
-    <div className="py-8 md:py-10 px-4 md:px-[60px] 2xl:py-7 2xl:px-28 bg-[#EAF4FF]">
-      <div className="flex flex-col md:flex-row justify-between gap-10 md:gap-3">
-        <div className="flex flex-col gap-5 items-center">
-          <p className="text-2xl md:text-3xl font-bold">Hubungi Kami</p>
-          <div className="flex gap-2 items-center">
-            <FaPhone />
-            <p>(061) 8460390</p>
+    <footer className="bg-gray-800 text-gray-300">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          
+          <div className="mb-6 md:mb-0">
+            <h2 className="text-2xl font-bold text-white mb-4">Sekolah Letjen</h2>
+            <p className="text-gray-400">
+              Membentuk generasi masa depan yang cerdas, kreatif, dan berakhlak mulia.
+            </p>
           </div>
-          <div className="flex gap-2 items-center">
-            <IoMdMail />
-            <p>sekolahletjen@gmail.com</p>
+
+          <div className="mb-6 md:mb-0">
+            <h3 className="text-lg font-semibold text-white mb-4 uppercase">Tautan Cepat</h3>
+            <ul className="space-y-2">
+              <li><a href="#" onClick={() => window.scrollTo(0, 0)} className="hover:text-blue-400 transition-colors">Beranda</a></li>
+              <li><a href="/news" className="hover:text-blue-400 transition-colors">Berita</a></li>
+              <li><a href="/gallery" className="hover:text-blue-400 transition-colors">Galeri Sekolah</a></li>
+              <li><a href="/student-registration" className="hover:text-blue-400 transition-colors">Pendaftaran</a></li>
+            </ul>
           </div>
-          <div className="flex gap-2 items-center">
-            <FaCity />
-            <p>Jl Pinang Baris II, Gg Sekata</p>
+
+          <div className="mb-6 md:mb-0">
+            <h3 className="text-lg font-semibold text-white mb-4 uppercase">Hubungi Kami</h3>
+            <div className="flex flex-col space-y-3">
+              <div className="flex items-center gap-3">
+                <FaPhone className="text-blue-400" />
+                <span>(061) 8460390</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <IoMail className="text-blue-400" />
+                <span>sekolahletjen@gmail.com</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <FaMapMarkerAlt className="text-blue-400 mt-1 flex-shrink-0" />
+                <span>Jl Pinang Baris II, Gg Sekata, Medan</span>
+              </div>
+            </div>
           </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-4 uppercase">Ayo Bergabung</h3>
+            <p className="mb-4 text-gray-400">Daftarkan putra-putri Anda sekarang juga!</p>
+            <Button onClick={() => navigate("/student-registration")} className="w-full text-center flex justify-center">
+              Pendaftaran Siswa
+            </Button>
+            <div className="flex justify-start space-x-4 mt-6">
+              <a href="#" aria-label="Facebook" className="text-gray-400 hover:text-white"><FaFacebook size={24}/></a>
+              <a href="https://www.instagram.com/sekolah.letjenharyonomt/" aria-label="Instagram" className="text-gray-400 hover:text-white"><FaInstagram size={24}/></a>
+              <a href="#" aria-label="LinkedIn" className="text-gray-400 hover:text-white"><FaLinkedin size={24}/></a>
+            </div>
+          </div>
+
         </div>
 
-        <div className="hidden md:block w-[2px] bg-black"></div>
-
-        <div className="flex flex-col justify-center">
-          <p className="text-2xl md:text-3xl font-bold text-center">Ayo Segera Daftarkan Anak Anda</p>
-          <Button className="mt-4 flex justify-center mx-auto px-10 w-[90%] md:w-96">Pendaftaran Siswa</Button>
+        <div className="mt-12 pt-8 border-t border-gray-700 text-center">
+          <p className="text-gray-500 text-sm">
+            &copy; {currentYear} Sekolah Letjen. Seluruh Hak Cipta Dilindungi.
+          </p>
         </div>
       </div>
-    </div>
+    </footer>
   )
 }
 

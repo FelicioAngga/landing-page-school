@@ -50,3 +50,7 @@ ol > li > .ql-ui {
   content: "";
   display: inline-block;
 }
+
+html body {
+  scroll-behavior: smooth;
+}
