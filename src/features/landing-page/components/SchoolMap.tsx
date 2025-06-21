@@ -1,31 +1,45 @@
-import GoogleMapReact from 'google-map-react';
-import { FaMapMarkerAlt } from 'react-icons/fa';
+import { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import L from "leaflet";
 
-const Marker = (_: any) => <FaMapMarkerAlt onClick={() => window.open("https://www.google.com/maps?ll=3.59227,98.612683&z=19&t=m&hl=en-US&gl=US&mapclient=apiv3&cid=8376496467592141419", "_blank")} className="size-16 text-red-500" />;
+// Fix Leaflet marker icon paths
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).toString(),
+  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).toString(),
+  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).toString(),
+});
 
 function SchoolMap() {
-  const defaultProps = {
-    center: {
-      lat: 3.5924006747689416,
-      lng: 98.61267713902686
-    },
-    zoom: 19
-  };
+  const [isMounted, setIsMounted] = useState(false);
+  const position: [number, number] = [3.5921669378452434, 98.61272055092434]; 
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
-    <div className='mt-20 h-[50vh]'>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: "" }}
-        defaultCenter={defaultProps.center}
-        defaultZoom={defaultProps.zoom}
-      >
-        <Marker
-          lat={defaultProps.center.lat}
-          lng={defaultProps.center.lng}
-        />
-      </GoogleMapReact>
+    <div className="mt-20 h-[50vh]">
+      {isMounted && (
+        <MapContainer
+          center={position}
+          zoom={16}
+          scrollWheelZoom={false}
+          className="h-full w-full"
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={position}>
+            <Popup>
+              <p onClick={() => window.open("https://maps.app.goo.gl/VNBdtuoHCbn8YyBt9", "_blank")} className="underline text-blue-400 cursor-pointer">Yayasan Perguruan Letjen Haryono M.T.</p>
+            </Popup>
+          </Marker>
+        </MapContainer>
+      )}
     </div>
-  )
+  );
 }
 
-export default SchoolMap
+export default SchoolMap;

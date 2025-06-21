@@ -56,9 +56,7 @@ function Footer() {
               Pendaftaran Siswa
             </Button>
             <div className="flex justify-start space-x-4 mt-6">
-              <a href="#" aria-label="Facebook" className="text-gray-400 hover:text-white"><FaFacebook size={24}/></a>
-              <a href="https://www.instagram.com/sekolah.letjenharyonomt/" aria-label="Instagram" className="text-gray-400 hover:text-white"><FaInstagram size={24}/></a>
-              <a href="#" aria-label="LinkedIn" className="text-gray-400 hover:text-white"><FaLinkedin size={24}/></a>
+              <a href="https://www.instagram.com/sekolah.letjenharyonomt/" aria-label="Instagram" className="flex items-center gap-2 text-gray-400 hover:text-white"><FaInstagram size={24}/>Instagram</a>
             </div>
           </div>
 
