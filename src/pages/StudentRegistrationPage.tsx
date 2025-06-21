@@ -11,7 +11,7 @@ function StudentRegistrationPage() {
   }, []);
 
   return (
-    <div>
+    <div className="mt-[77px]">
       <NavigationBar />
       <StudentRegistration />
     </div>

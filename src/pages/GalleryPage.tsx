@@ -56,7 +56,7 @@ function GalleryPage() {
       name: "Acara Kelulusan"
     },
     {
-      src: "images/event2.jpg",
+      src: "images/event2.png",
       name: "Acara Tahunan"
     },
     {
@@ -74,13 +74,13 @@ function GalleryPage() {
   ];
 
   return (
-    <div>
+    <div className='mt-[77px]'>
       <NavigationBar />
 
       <div className="flex flex-col gap-12 mt-10 pb-20">
         <div className="p-6 pt-4 bg-[#F0F0F0]">
           <p className="w-fit mx-auto font-bold text-2xl">Ruang Kelas</p>
-          <Slider {...settings} className="mt-4">
+          <Slider autoplay {...settings} className="mt-4">
             {classRoomImages.map((image, index) => (
               <div className="px-2" key={index}>
                 <img
@@ -95,7 +95,7 @@ function GalleryPage() {
 
         <div className="p-6 pt-4 bg-[#F0F0F0]">
           <p className="w-fit mx-auto font-bold text-2xl">Acara Sekolah</p>
-          <Slider {...settings} className="mt-4">
+          <Slider autoplay {...settings} className="mt-4">
             {eventImages.map((image, index) => (
               <div className="relative px-2" key={index}>
                 <img
@@ -112,7 +112,7 @@ function GalleryPage() {
 
         <div className="p-6 pt-4 bg-[#F0F0F0]">
           <p className="w-fit mx-auto font-bold text-2xl">Ruang Laboratorium</p>
-          <Slider {...settings} className="mt-4">
+          <Slider autoplay {...settings} className="mt-4">
             {labImages.map((image, index) => (
               <div className="px-2" key={index}>
                 <img
@@ -127,7 +127,7 @@ function GalleryPage() {
 
         <div className="p-6 pt-4 bg-[#F0F0F0]">
           <p className="w-fit mx-auto font-bold text-2xl">Lab Komputer</p>
-          <Slider {...settings} className="mt-4">
+          <Slider autoplay {...settings} className="mt-4">
             {labCompImages.map((image, index) => (
               <div className="px-2" key={index}>
                 <img

@@ -3,7 +3,7 @@ import Login from '../features/login'
 
 function LoginPage() {
   return (
-    <div>
+    <div className='mt-[77px]'>
       <NavigationBar />
       <Login />
     </div>

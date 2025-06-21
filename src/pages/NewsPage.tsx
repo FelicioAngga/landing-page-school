@@ -3,7 +3,7 @@ import News from "../features/news";
 
 function NewsPage() {
   return (
-    <div>
+    <div className='mt-[77px]'>
       <NavigationBar />
       <News />
     </div>

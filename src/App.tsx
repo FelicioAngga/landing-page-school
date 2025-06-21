@@ -11,10 +11,20 @@ import LoginPage from "./pages/LoginPage";
 import StudentRegistrationPage from "./pages/StudentRegistrationPage";
 import { AlertProvider } from "./components/AlertContext";
 import NewsDetail from "./pages/NewsDetail";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 function App() {
   const queryClient = new QueryClient();
 
+  useEffect(() => {
+    AOS.init({
+      once: true,
+    });
+    AOS.refresh();
+  }, []);
+  
   return (
     <QueryClientProvider client={queryClient}>
       <AlertProvider>
