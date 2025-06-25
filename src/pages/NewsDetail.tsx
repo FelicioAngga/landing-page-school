@@ -17,7 +17,7 @@ function NewsDetail() {
   return (
     <div>
       <NavigationBar />
-      <div className="mb-3 py-5 px-4 md:px-[60px] 2xl:py-7 2xl:px-28">
+      <div className="mt-[77px] mb-3 py-5 px-4 md:px-[60px] 2xl:py-7 2xl:px-28">
         <div className="flex items-center mb-5 font-medium cursor-pointer" onClick={() => navigate(-1)}>
           <BiChevronLeft size={30} />
           <p>Kembali</p>
