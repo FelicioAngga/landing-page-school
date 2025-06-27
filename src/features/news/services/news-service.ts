@@ -10,6 +10,7 @@ export type NewsDetailResponseType = {
   title: string;
   content: string;
   thumbnail: string;
+  created_at: string;
 }
 
 export type NewsParamsType = {
