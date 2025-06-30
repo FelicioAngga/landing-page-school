@@ -32,16 +32,13 @@ function GalleryPage() {
   const classRoomImages = [
     "images/class1.jpg",
     "images/sd.jpg",
-    "images/class3.jpg",
-    "images/class4.jpg",
-    "images/class5.jpg",
+    "images/class3.png",
   ];
 
   const labImages = [
     "images/lab4.png",
     "images/lab3.jpeg",
     "images/lab1.png",
-    "images/lab2.png",
   ];
 
   const labCompImages = [

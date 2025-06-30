@@ -3,7 +3,7 @@ import { useCountUp } from "react-countup";
 function SchoolNumberInfo() {
   useCountUp({
     ref: 'activeStudentsCounter',
-    end: 300,
+    end: 500,
     duration: 2,
     scrollSpyDelay: 50,
     enableScrollSpy: true,
@@ -11,7 +11,7 @@ function SchoolNumberInfo() {
   });
   useCountUp({
     ref: 'alumniCounter',
-    end: 2100,
+    end: 1100,
     duration: 2,
     scrollSpyDelay: 50,
     enableScrollSpy: true,
@@ -19,7 +19,7 @@ function SchoolNumberInfo() {
   });
   useCountUp({
     ref: 'yearCounter',
-    end: 1992,
+    end: 1980,
     duration: 2,
     scrollSpyDelay: 50,
     enableScrollSpy: true,
@@ -28,7 +28,7 @@ function SchoolNumberInfo() {
   });
   useCountUp({
     ref: 'percentageCounter',
-    end: 95,
+    end: 100,
     duration: 2,
     scrollSpyDelay: 50,
     enableScrollSpy: true,

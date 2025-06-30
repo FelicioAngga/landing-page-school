@@ -21,7 +21,7 @@ function SchoolActivity() {
             <img src='images/event3.jpg' className="min-h-[50vh] md:min-h-max object-cover 2xl:object-[0_-160px]" />
             <div className="absolute bg-black top-0 size-full opacity-40"></div>
             <div className="absolute inset-0 flex flex-col gap-3 justify-top pt-16 items-center text-white">
-              <p className="text-xl md:text-4xl font-semibold">Boy's Brigade (BB)</p>
+              <p className="text-xl md:text-4xl font-semibold">Boys' Brigade (BB)</p>
               <p className='text-sm md:text-base max-w-2xl text-center'>Sekolah menawarkan Boys' Brigade sebagai salah satu kegiatan sekolah yang nantinya akan menjadi wadah pembinaan karakter, kepemimpinan, dan pelayanan bagi siswa sekolah dasar hingga menengah.</p>
             </div>
             <div className="absolute inset-x-0 bottom-10 flex justify-center text-white">
