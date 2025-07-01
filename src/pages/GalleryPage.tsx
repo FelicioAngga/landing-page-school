@@ -37,8 +37,8 @@ function GalleryPage() {
 
   const labImages = [
     "images/lab4.png",
-    "images/lab3.jpeg",
     "images/lab1.png",
+    "images/lab4.png",
   ];
 
   const labCompImages = [
