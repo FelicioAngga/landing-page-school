@@ -253,7 +253,7 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
               <div>
                 <p className="text-sm mb-1 font-medium">Nama Ibu <span className="text-red-500">*</span></p>
                 <Input
-                  placeholder="Nama Ayah"
+                  placeholder="Nama Ibu"
                   className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
                   value={parents.mother.name}
                   onChange={(e) => setParents({ ...parents, mother: { ...parents.mother, name: e.target.value } })}
