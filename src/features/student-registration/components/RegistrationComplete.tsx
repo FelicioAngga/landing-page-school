@@ -9,6 +9,11 @@ function RegistrationComplete({
   studentData?: StudentInformationType;
 }) {
   const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+    navigate("/login")
+  }
   return (
     <div className="flex flex-col gap-5 justify-center items-center py-5 px-4 md:px-[60px] 2xl:py-7 2xl:px-28 min-h-[80vh]">
       <BsMailbox2 className="mx-auto lg:text-7xl 2xl:text-8xl" />
@@ -21,7 +26,8 @@ function RegistrationComplete({
           {studentData?.state === "draft" ? "Sedang Diproses" : "Disetujui"}
         </div>
       </div>
-      <Button onClick={() => navigate("/")} className="mt-3 lg:px-20">Kembali ke beranda</Button>
+      <p>Logout kemudian login kembali untuk mengakses portal siswa</p>
+      <Button onClick={logout} className="mt-3 lg:px-20 bg-red-500">Logout</Button>
     </div>
   );
 }

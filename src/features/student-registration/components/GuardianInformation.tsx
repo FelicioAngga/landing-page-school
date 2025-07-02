@@ -494,7 +494,7 @@ function GuardianInformation({ guardianData, applicantId, setSelectedTab }: Guar
         onClick={handleNext}
         disabled={!isAllFieldsFilled() || isPending}
       >
-        Berikutnya
+        Simpan dan Lanjutkan
       </Button>
     </div>
   )

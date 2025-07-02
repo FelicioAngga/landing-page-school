@@ -21,6 +21,7 @@ export type StudentInformationType = {
   registration_major: string;
   state?: string;
   reason?: string;
+  documents: any[];
 }
 
 export async function getStudentInformation(): Promise<StudentInformationType> {

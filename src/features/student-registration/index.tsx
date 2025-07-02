@@ -11,8 +11,9 @@ import { DocsTypeResponse, DocumentType, getDocumentInformation, getDocumentType
 import { getUser } from "../login/services/login-service";
 import RegistrationComplete from "./components/RegistrationComplete";
 
-export default function () {
+export default function StudentRegistration() {
   const { showAlert } = useAlert();
+  const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
   const [isRegistrationComplete, setIsRegistrationComplete] = useState(false);
   const [selectedTab, setSelectedTab] = useState("Informasi Siswa");
   const user = getUser();
@@ -45,18 +46,20 @@ export default function () {
     const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name.toLowerCase() === "bukti pembayaran")?.id;
     const docPayment = documentData?.find((doc: DocumentType) => doc.type_id === docPaymentTypeId);
     if (docPayment?.id) setIsRegistrationComplete(true);
+    if (documentData?.length > 0) setIsDocumentUploaded(true);
   }, [documentData, docsType])
 
   if (isRegistrationComplete && studentData?.state === "approved") return <RegistrationComplete />
   return (
     <div className="py-5 px-4 md:px-[60px] 2xl:py-7 2xl:px-28">
-      {isRegistrationComplete && (
+      {isDocumentUploaded && (
         <div className="mb-5">
           <div className="flex gap-2 items-center">
             <p className="text-center font-medium text-lg">Status pendaftaran saat ini:</p>
             <div className={`font-medium text-base px-3 py-1 rounded-md text-white 
-            ${studentData?.state === "draft" ? "bg-[#FFA726]" : studentData?.state === "approved" ? "bg-[#28C76F]" : "bg-red-400"}`}>
-              {studentData?.state === "draft" ? "Sedang Diproses" : studentData?.state === "approved" ? "Disetujui" : "Ditolak"}
+            ${studentData?.state === "draft" || studentData?.state === "draft_payment" ? "bg-[#FFA726]" : studentData?.state === "approved" ? "bg-[#28C76F]" : "bg-red-400"}`}>
+              {studentData?.state === "draft" || studentData?.state === "draft_payment" && isRegistrationComplete ? "Sedang Diproses" : studentData?.state === "draft_payment" && !isRegistrationComplete ? "Menunggu upload dokumen" 
+              : studentData?.state === "approved" ? "Disetujui" : "Ditolak"}
             </div>
           </div>
           {(studentData?.reason && studentData.state === "rejected") && (

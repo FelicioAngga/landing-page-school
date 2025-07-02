@@ -26,6 +26,7 @@ function Payment({ documentData, applicant_id, studentData }: PaymentProps) {
     retryDelay: 1000 * 60 * 0.5,
   });
 
+  const [isRegistrationComplete, setIsRegistrationComplete] = useState(false);
   const [paymentInfo, setPaymentInfo] = useState({
     id: 0,
     preview: "",
@@ -88,6 +89,7 @@ function Payment({ documentData, applicant_id, studentData }: PaymentProps) {
     if (!documentData?.length || !docsType) return;
     const docPaymentTypeId = docsType?.find((doc: DocsTypeResponse) => doc.name.toLowerCase() === "bukti pembayaran")?.id;
     const docPayment = documentData?.find((doc: DocumentType) => doc.type_id === docPaymentTypeId);
+    if (docPayment?.id) setIsRegistrationComplete(true);
     setPaymentInfo({
       id: docPayment?.id || 0,
       preview: docPayment?.uploaded_file || "",
@@ -99,6 +101,26 @@ function Payment({ documentData, applicant_id, studentData }: PaymentProps) {
   useEffect(() => {
     if (paymentInfo.preview) return () => URL.revokeObjectURL(paymentInfo.preview);
   }, [paymentInfo])
+  
+  if (studentData?.state === "draft" && studentData?.documents?.length > 0) return (
+    <div>
+      <p className="mt-5 text-2xl md:text-3xl font-bold text-center">Pendaftaran Siswa</p>
+      <div className="mt-8">
+        <p className="text-center text-lg">Pendaftaran anda masih dalam proses verifikasi, silahkan tunggu 1x24 jam hingga data anda disetujui.</p>
+        <div className="text-center text-lg">Setelah data diverifikasi anda dapat melakukan pembayaran</div>
+      </div>
+    </div>
+  )
+
+  if (studentData?.state === "rejected" && !isRegistrationComplete) return (
+    <div>
+      <p className="mt-5 text-2xl md:text-3xl font-bold text-center">Pendaftaran Siswa</p>
+      <div className="mt-8">
+        <p className="text-center text-lg">Pendaftaran anda ditolak, silahkan perbaiki data anda.</p>
+        <div className="text-center text-lg">Setelah data diperbaiki, silahkan tunggu 1x24 jam hingga data anda disetujui.</div>
+      </div>
+    </div>
+  )
   
   return (
     <div className="mt-5 md:mt-12">

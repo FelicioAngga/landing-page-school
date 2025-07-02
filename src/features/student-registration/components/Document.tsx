@@ -377,7 +377,7 @@ function Document({ documentData, applicantId, setSelectedTab, studentData }: Do
         className="max-w-md flex justify-center mx-auto font-bold w-full mt-5" 
         onClick={handleNext}
       >
-        Berikutnya
+        Simpan dan Lanjutkan
       </Button>
     </div>
   );

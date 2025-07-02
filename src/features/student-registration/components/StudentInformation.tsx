@@ -23,7 +23,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
     siblingsCount: "",
     siblingOrder: "",
     livingWith: null,
-    familyStatus: "",
+    familyStatus: null,
     phoneNumber: "",
     previousSchool: "",
     address: "",
@@ -106,7 +106,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
       siblingsCount: studentData.number_of_siblings || "" as any,
       siblingOrder: studentData.child_sequence || "" as any,
       livingWith: studentData.living_with || null as any,
-      familyStatus: studentData.child_status || "",
+      familyStatus: studentData.child_status || null as any,
       phoneNumber: studentData.phone || "",
       previousSchool: studentData.school_origin || "",
       address: studentData.address || "",
@@ -269,10 +269,9 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
                 setFormData({ ...formData, livingWith: value })
               }
             >
-              <Select.Option value="parent">Orang Tua</Select.Option>
-              <Select.Option value="family">Keluarga</Select.Option>
-              <Select.Option value="outsider">Kerabat Jauh</Select.Option>
-              <Select.Option value="other">Lainnya</Select.Option>
+              <Select.Option value="Orang Tua">Orang Tua</Select.Option>
+              <Select.Option value="Keluarga">Keluarga</Select.Option>
+              <Select.Option value="Kerabat Jauh">Kerabat Jauh</Select.Option>
             </Select>
           </div>
 
@@ -281,14 +280,18 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
               Status Diri Dalam Keluarga
               <span className="text-red-500">*</span>
             </p>
-            <Input
-              placeholder="Status Diri Dalam Keluarga"
-              className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
+            <Select
+              placeholder="Pilih Status Diri Dalam Keluarga"
+              className="w-full h-10 text-sm rounded-md border border-gray-400 placeholder:text-[#A5A5A5]"
               value={formData.familyStatus}
-              onChange={(e) =>
-                setFormData({ ...formData, familyStatus: e.target.value })
+              onChange={(value) =>
+                setFormData({ ...formData, familyStatus: value })
               }
-            />
+            >
+              <Select.Option value="Anak Kandung">Anak Kandung</Select.Option>
+              <Select.Option value="Anak Tiri">Anak Tiri</Select.Option>
+              <Select.Option value="Anak Angkat">Anak Angkat</Select.Option>
+            </Select>
           </div>
 
           <div>
@@ -310,9 +313,12 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">
-              Pindahan dari Sekolah <span className="text-red-500">*</span>
-            </p>
+            <div className="flex gap-3 items-center">
+              <p className="text-sm mb-1 font-medium">
+                Pindahan dari Sekolah <span className="text-red-500">*</span>
+              </p>
+              <p className="text-gray-500 text-sm">(Isi '-' jika tidak ada)</p>
+            </div>
             <Input
               placeholder="Pindahan dari Sekolah"
               className="py-2 text-sm border-gray-400 placeholder:text-[#A5A5A5]"
@@ -384,7 +390,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           onClick={handleNext}
           disabled={!isAllFieldsFilled() || isPending} 
         >
-          Berikutnya
+          Simpan dan Lanjutkan
         </Button>
       </div>
     </div>
