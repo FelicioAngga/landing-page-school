@@ -78,7 +78,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
       number_of_siblings: parseInt(formData.siblingsCount.toString()),
       level_id: formData.level_id as any,
       living_with: formData.livingWith as any,
-      child_status: formData.familyStatus,
+      child_status: formData.familyStatus as any,
       school_origin: formData.previousSchool,
       registration_grade: gradeData?.find(grade => grade.id === formData.level_id)?.name as any,
       registration_major: formData.major as any,
@@ -118,15 +118,15 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
 
   return (
     <div className="mt-5 md:mt-12">
-      <p className="text-2xl md:text-3xl font-bold text-center">
+      <p className="text-2xl font-bold text-center md:text-3xl">
         Pendaftaran Siswa
       </p>
 
-      <div className="mt-3 md:mt-5 w-fit mx-auto">
-        <p className="2xl:text-lg font-bold">Data Siswa</p>
+      <div className="mx-auto mt-3 md:mt-5 w-fit">
+        <p className="font-bold 2xl:text-lg">Data Siswa</p>
         <div className="mt-3 flex flex-col gap-4 md:w-[600px] px-6 py-4 border rounded-lg">
           <div>
-            <p className="text-sm mb-1 font-medium">
+            <p className="mb-1 text-sm font-medium">
               Nama Lengkap <span className="text-red-500">*</span>
             </p>
             <Input
@@ -139,7 +139,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
             />
           </div>
           <div>
-            <p className="text-sm mb-1 font-medium">
+            <p className="mb-1 text-sm font-medium">
               NIK
             </p>
             <Input
@@ -153,7 +153,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
             />
           </div>
           <div>
-            <p className="text-sm mb-1 font-medium">
+            <p className="mb-1 text-sm font-medium">
               NISN {formData.level_id !== 1 && <span className="text-red-500">*</span>}
             </p>
             <Input
@@ -168,7 +168,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           </div>
           <div className="flex gap-6">
             <div className="w-full">
-              <p className="text-sm mb-1 font-medium">
+              <p className="mb-1 text-sm font-medium">
                 Tempat Lahir <span className="text-red-500">*</span>
               </p>
               <Input
@@ -181,7 +181,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
               />
             </div>
             <div className="w-full">
-              <p className="text-sm mb-1 font-medium">
+              <p className="mb-1 text-sm font-medium">
                 Tanggal Lahir <span className="text-red-500">*</span>
               </p>
               <DatePicker
@@ -199,7 +199,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">
+            <p className="mb-1 text-sm font-medium">
               Agama <span className="text-red-500">*</span>
             </p>
             <Select
@@ -221,7 +221,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
 
           <div className="flex gap-6">
             <div className="w-full">
-              <p className="text-sm mb-1 font-medium whitespace-nowrap">
+              <p className="mb-1 text-sm font-medium whitespace-nowrap">
                 Jumlah Saudara <span className="text-red-500">*</span>
               </p>
               <Input
@@ -239,7 +239,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
             </div>
 
             <div className="w-full">
-              <p className="text-sm mb-1 font-medium">
+              <p className="mb-1 text-sm font-medium">
                 Saudara Ke <span className="text-red-500">*</span>
               </p>
               <Input
@@ -258,7 +258,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">
+            <p className="mb-1 text-sm font-medium">
               Tinggal Bersama <span className="text-red-500">*</span>
             </p>
             <Select
@@ -276,7 +276,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">
+            <p className="mb-1 text-sm font-medium">
               Status Diri Dalam Keluarga
               <span className="text-red-500">*</span>
             </p>
@@ -295,7 +295,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">
+            <p className="mb-1 text-sm font-medium">
               No Telepon <span className="text-red-500">*</span>
             </p>
             <Input
@@ -313,11 +313,11 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           </div>
 
           <div>
-            <div className="flex gap-3 items-center">
-              <p className="text-sm mb-1 font-medium">
+            <div className="flex items-center gap-3">
+              <p className="mb-1 text-sm font-medium">
                 Pindahan dari Sekolah <span className="text-red-500">*</span>
               </p>
-              <p className="text-gray-500 text-sm">(Isi '-' jika tidak ada)</p>
+              <p className="text-sm text-gray-500">(Isi '-' jika tidak ada)</p>
             </div>
             <Input
               placeholder="Pindahan dari Sekolah"
@@ -330,7 +330,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">
+            <p className="mb-1 text-sm font-medium">
               Alamat Siswa <span className="text-red-500">*</span>
             </p>
             <Input
@@ -344,7 +344,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">
+            <p className="mb-1 text-sm font-medium">
               Jenjang Pendidikan yang Diinginkan{" "}
               <span className="text-red-500">*</span>
             </p>
@@ -365,7 +365,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
           </div>
 
           <div>
-            <p className="text-sm mb-1 font-medium">
+            <p className="mb-1 text-sm font-medium">
               Jurusan <span className="text-red-500">*</span>
             </p>
             <Select
@@ -386,7 +386,7 @@ function StudentInformation({ studentData, setSelectedTab }: StudentInformationP
         </div>
 
         <Button 
-          className="font-bold w-full mt-5" 
+          className="w-full mt-5 font-bold" 
           onClick={handleNext}
           disabled={!isAllFieldsFilled() || isPending} 
         >

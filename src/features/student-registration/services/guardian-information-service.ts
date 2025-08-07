@@ -23,6 +23,7 @@ export async function getGuardianInformation(applicant_id: number | undefined) {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": `Bearer ${getAccessToken()}`,
+        "ngrok-skip-browser-warning": "true",
       },
     });
   const responseJson = await response.json();

@@ -21,7 +21,7 @@ export type StudentInformationType = {
   registration_major: string;
   state?: string;
   reason?: string;
-  documents: any[];
+  documents?: any[];
 }
 
 export async function getStudentInformation(): Promise<StudentInformationType> {
@@ -32,6 +32,7 @@ export async function getStudentInformation(): Promise<StudentInformationType> {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": `Bearer ${getAccessToken()}`,
+        "ngrok-skip-browser-warning": "true",
       },
     });
   const responseJson = await response.json();
@@ -48,6 +49,7 @@ export async function saveStudentInformation(data: StudentInformationType) {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
       },
       body: JSON.stringify({
         ...data,
@@ -68,6 +70,7 @@ export async function updateStudentInformation(data: StudentInformationType) {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
       },
       body: JSON.stringify({
         ...data,
@@ -87,6 +90,7 @@ export async function getGrades(): Promise<any[]> {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": `Bearer ${getAccessToken()}`,
+        "ngrok-skip-browser-warning": "true",
       },
     });
   const responseJson = await response.json();
