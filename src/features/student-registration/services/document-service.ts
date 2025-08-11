@@ -23,6 +23,7 @@ export async function createDocument(data: DocumentType) {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
       },
       body: JSON.stringify(data),
     });
@@ -40,6 +41,7 @@ export async function updateDocument(data: DocumentType) {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
       },
       body: JSON.stringify(data),
     });
