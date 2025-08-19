@@ -41,6 +41,7 @@ export async function saveGuardianInformation(data: GuardianInformationType[]) {
           "Content-Type": "application/json",
           "Accept": "application/json",
           "Authorization": `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true",
         },
         body: JSON.stringify(guardian),
       }
@@ -64,6 +65,7 @@ export async function updateGuardianInformation(data: GuardianInformationType[])
           "Content-Type": "application/json",
           "Accept": "application/json",
           "Authorization": `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true",
         },
         body: JSON.stringify(guardian),
       }

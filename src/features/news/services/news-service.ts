@@ -26,6 +26,7 @@ export async function getNews({ page, limit, search }: NewsParamsType) {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
+        "ngrok-skip-browser-warning": "true",
       },
     });
   const responseJson = await response.json();
@@ -40,6 +41,7 @@ export async function getNewsById(id: string): Promise<NewsDetailResponseType> {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
+        "ngrok-skip-browser-warning": "true",
       },
     });
   const responseJson = await response.json();
