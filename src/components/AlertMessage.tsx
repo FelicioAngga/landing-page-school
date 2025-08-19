@@ -32,6 +32,7 @@ const AlertMessage: React.FC<AlertMessageProps> = ({
       <Alert
         message={message}
         description={description}
+        className="px-4 py-5"
         type={type}
         showIcon
         closable

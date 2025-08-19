@@ -35,7 +35,7 @@ export const AlertProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     <AlertContext.Provider value={{ showAlert }}>
       {children}
       {alert.visible && (
-        <div className="fixed top-4 right-0 z-50 w-full max-w-md px-4">
+        <div className="fixed right-0 z-50 w-full max-w-md px-4 top-4">
           <AlertMessage
             visible={alert.visible}
             message={alert.message}

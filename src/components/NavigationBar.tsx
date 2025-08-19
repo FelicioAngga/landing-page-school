@@ -37,27 +37,27 @@ function NavigationBar() {
       items-center py-5 px-4 md:px-8 2xl:py-7 2xl:px-28 border border-[#E5E8EB]`}>
         <div
           onClick={() => navigate("/")}
-          className="text-xl 2xl:text-2xl font-bold cursor-pointer"
+          className="text-xl font-bold cursor-pointer 2xl:text-2xl"
         >
           Letjen Haryono M.T.
         </div>
 
-        <div className="gap-6 hidden md:flex items-center">
+        <div className="items-center hidden gap-6 md:flex">
           <div
             onClick={() => navigate("/news")}
-            className="text-base lg:text-lg 2xl:text-xl font-medium cursor-pointer"
+            className="text-base font-medium cursor-pointer lg:text-lg 2xl:text-xl"
           >
             Berita
           </div>
           <div
             onClick={() => navigate("/student-registration")}
-            className="text-base lg:text-lg 2xl:text-xl font-medium cursor-pointer"
+            className="text-base font-medium cursor-pointer lg:text-lg 2xl:text-xl"
           >
             Pendaftaran Siswa
           </div>
           <div
             onClick={() => navigate("/gallery")}
-            className="text-base lg:text-lg 2xl:text-xl font-medium cursor-pointer"
+            className="text-base font-medium cursor-pointer lg:text-lg 2xl:text-xl"
           >
             Galeri Sekolah
           </div>
@@ -71,29 +71,29 @@ function NavigationBar() {
                       localStorage.removeItem("user");
                       navigate("/login");
                     }}
-                    className="lg:text-lg 2xl:text-xl font-medium cursor-pointer text-red-500"
-                  >Logout</div>
+                    className="font-medium text-red-500 cursor-pointer lg:text-lg 2xl:text-xl"
+                  >Keluar</div>
                 </div>
               }
             >
-              <div className="flex items-center gap-2 lg:text-lg 2xl:text-xl cursor-pointer">
-                <img className="size-6 lg:size-8 rounded-full" src="images/default-user.jpeg" />
+              <div className="flex items-center gap-2 cursor-pointer lg:text-lg 2xl:text-xl">
+                <img className="rounded-full size-6 lg:size-8" src="images/default-user.jpeg" />
                 <p>{getUser()?.name}</p>
               </div>  
             </Popover>
           ) : (
             <div className="px-5 py-1.5 rounded cursor-pointer text-white bg-[#1469C2]" onClick={() => navigate("/login")}>
-              Login
+              Masuk
             </div>
           )}
         </div>
 
-        <button onClick={() => setIsOpen(true)} className="md:hidden text-2xl">
+        <button onClick={() => setIsOpen(true)} className="text-2xl md:hidden">
           <FaBars />
         </button>
 
         {isOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-40 z-40"></div>
+          <div className="fixed inset-0 z-40 bg-black bg-opacity-40"></div>
         )}
 
         <div
@@ -132,7 +132,7 @@ function NavigationBar() {
                 localStorage.removeItem("user");
                 navigate("/login");
               }}
-              className="text-lg 2xl:text-xl font-medium cursor-pointer text-red-500"
+              className="text-lg font-medium text-red-500 cursor-pointer 2xl:text-xl"
             >
               Logout
             </div>

@@ -64,9 +64,9 @@ export default function () {
       <div className="flex justify-center py-6 px-4 h-[92vh]">
         <div className="md:w-[50%] xl:w-[40%] flex flex-col gap-20 md:gap-32 mb-3 pt-7 md:px-[60px] 2xl:pt-10 2xl:px-28">
           <div>
-            <p className="text-2xl md:text-3xl font-bold text-center">Login</p>
+            <p className="text-2xl font-bold text-center md:text-3xl">Masuk</p>
             <p className="text-xs md:text-sm text-[#A5A5A5] mt-4 text-center">
-              Login untuk melakukan pendaftaran siswa dan melihat proses
+              Masuk akun untuk melakukan pendaftaran siswa dan melihat proses
               pendaftaran siswa
             </p>
           </div>
@@ -83,19 +83,19 @@ export default function () {
             />
             <p className="text-xs text-red-500">{formData.emailError}</p>
 
-            <div className="mt-6 w-full">
-              <p className="font-medium mb-2">Password</p>
+            <div className="w-full mt-6">
+              <p className="mb-2 font-medium">Kata sandi</p>
               <div className="relative w-full">
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Masukkan password"
+                  placeholder="Masukkan kata sandi"
                   className="w-full py-2.5 px-3 rounded border border-[#A5A5A5]"
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
                 />
                 <div
-                  className="absolute inset-y-0 h-fit my-auto right-3 flex items-center cursor-pointer text-gray-600"
+                  className="absolute inset-y-0 flex items-center my-auto text-gray-600 cursor-pointer h-fit right-3"
                   onClick={() => setShowPassword((prev) => !prev)}
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -113,15 +113,15 @@ export default function () {
                 ) : (
                   <IoMdClose size={18} />
                 )}
-                6 characters minimum
+                minimal 6 karakter
               </p>
             </div>
 
             <Button
               disabled={!formData.email || formData.password.length < 6 || isPending}
-              className="w-full rounded-3xl mt-12"
+              className="w-full mt-12 rounded-3xl"
             >
-              Login
+              Masuk
             </Button>
           </div>
 
